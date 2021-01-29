@@ -12,7 +12,7 @@ int WINAPI WinMain(
 	ChangeWindowMode(true);
 	SetGraphMode(Widht, Height, 16);
 	SetBackgroundColor(255, 255, 255);
-	SetMainWindowText("CrashOthello");
+	SetMainWindowText("クラッシュリバーシ");
 
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
@@ -27,7 +27,6 @@ int WINAPI WinMain(
 	Othello::CreateInstance();
 	GameManager::CreateInstance();
 	SceneManager* pSceneMng = new SceneManager();
-	
 
 	while (true)
 	{
@@ -40,6 +39,8 @@ int WINAPI WinMain(
 		}
 		else
 		{
+
+
 			//フレームごとにキーの状態更新
 			UpdateKeyStatus();
 			

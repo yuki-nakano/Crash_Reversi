@@ -120,15 +120,15 @@ void DescriptionScene::Exec()
 		}
 	}
 
-	//if (IsKeyPushed(KEY_INPUT_RETURN))
-	//{
-	//	SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
-	//}
-	else if (IsKeyPushed(KEY_INPUT_ESCAPE))
+	if (IsKeyPushed(KEY_INPUT_RETURN))
 	{
-		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_BACK, TRUE);
-		SceneManager::SetNextScene(SceneID_Title);
+		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
 	}
+	//else if (IsKeyPushed(KEY_INPUT_ESCAPE))
+	//{
+	//	PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_BACK, TRUE);
+	//	SceneManager::SetNextScene(SceneID_Title);
+	//}
 }
 
 void DescriptionScene::Draw()
@@ -140,8 +140,8 @@ void DescriptionScene::Draw()
 	DrawGraph(back_posx5, back_posy5, TextureData::BackGround_BLUE, false);
 	DrawGraph(back_posx6, back_posy6, TextureData::BackGround_BLUE, false);
 
-	//DrawGraph(20, 20, TextureData::Enter, true);
-	DrawGraph(1104, 20, TextureData::Esc, true);
+	DrawGraph(20, 20, TextureData::Enter, true);
+	//DrawGraph(1104, 20, TextureData::Esc, true);
 
 	DrawGraph(445, 0, TextureData::Description, true);
 
