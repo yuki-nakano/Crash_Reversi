@@ -173,7 +173,7 @@ void SelectCharacterScene::Exec()
 
 	if (IsKeyPushed(KEY_INPUT_ESCAPE))
 	{
-		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_BACK, TRUE);
 		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
 	}
 
@@ -261,7 +261,7 @@ void SelectCharacterScene::Exec()
 	//キャラクター変更用
 	if (IsKeyPushed(KEY_INPUT_RETURN))
 	{
-		PlaySoundMem(soundManager->GetSoundData(sound::Enter), DX_PLAYTYPE_NORMAL, TRUE);
+		PlaySoundMem(soundManager->GetSoundData(sound::Enter), DX_PLAYTYPE_BACK, TRUE);
 		switch (Choice)
 		{
 		case 1:

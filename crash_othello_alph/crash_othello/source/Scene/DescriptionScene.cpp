@@ -101,12 +101,12 @@ void DescriptionScene::Exec()
 		if (Choice == 5)
 		{
 			Choice = 1;
-			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_BACK, TRUE);
 		}
 		else if (Choice < Choice_Max)
 		{
 			Choice += 1;
-			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (IsKeyPushed(KEY_INPUT_LEFT))
@@ -114,12 +114,12 @@ void DescriptionScene::Exec()
 		if (Choice > Choice_Min)
 		{
 			Choice -= 1;
-			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_BACK, TRUE);
 		}
 		else if (Choice == 1)
 		{
 			Choice = 5;
-			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 
@@ -129,7 +129,7 @@ void DescriptionScene::Exec()
 	//}
 	else if (IsKeyPushed(KEY_INPUT_ESCAPE))
 	{
-		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_BACK, TRUE);
 		SceneManager::SetNextScene(SceneID_Title);
 	}
 }
