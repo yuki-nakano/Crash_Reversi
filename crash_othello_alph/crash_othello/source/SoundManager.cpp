@@ -85,6 +85,11 @@ void SoundManager::DeleteSceneSound(SceneID sceneid)
 {
 	for (int i = 0; i < SoundMax; i++)
 	{
+		if (i == title || i == Play)
+		{
+			continue;
+		}
+
 		DeleteSoundMem(Sound[i]);
 	}
 }

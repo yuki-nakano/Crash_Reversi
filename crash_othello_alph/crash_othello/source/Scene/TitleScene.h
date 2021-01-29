@@ -14,6 +14,10 @@ public:
 
 	virtual bool IsEnd() const; //シーンが終了したかどうかを返す
 
+private:
+	bool description_scene = false;
+	bool nextScene = false;
+
 	SoundManager* soundManager = nullptr;
 };
 

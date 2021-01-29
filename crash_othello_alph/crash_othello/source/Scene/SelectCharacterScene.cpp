@@ -822,6 +822,7 @@ bool SelectCharacterScene::IsEnd() const
 {
 	if((IsKeyPushed(KEY_INPUT_RETURN) && SelectPlayer == 5) || (GameManager::GetInstance()->GetMaxPlayer() == 2 && SelectPlayer == 3) ||(IsKeyPushed(KEY_INPUT_ESCAPE)))
 	{
+		GameManager::GetInstance()->SetIsGameScene(true);
 		SceneManager::SetNextScene(SceneID_Play);
 		TextureData::DeleteTex();
 		return true;

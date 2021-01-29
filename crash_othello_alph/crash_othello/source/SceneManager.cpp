@@ -28,19 +28,22 @@ void SceneManager::Exec()
 		return;
 	}
 
-	switch (GameManager::GetInstance()->GetIsGameScene())
+	if (!IsPlayingMusic)
 	{
-	case true:
-		//ゲーム中
-		StopStreamSoundMem(soundManager->GetSoundData(sound::title));
-		PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_BACK, FALSE);
-		
-		break;
-	case false:
-		//ゲーム外
-		PlaySoundMem(soundManager->GetSoundData(sound::Play), DX_PLAYTYPE_BACK, FALSE);
+		switch (IsGameScene)
+		{
+		case true:
+			//ゲーム中
+			//StopStreamSoundMem(soundManager->GetSoundData(sound::title));
+			PlaySoundMem(soundManager->GetSoundData(sound::Play), DX_PLAYTYPE_BACK, FALSE);
 
-		break;
+			break;
+		case false:
+			//ゲーム外
+			PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_BACK, FALSE);
+
+			break;
+		}
 	}
 
 	m_pScene->Exec();
@@ -51,13 +54,15 @@ void SceneManager::Exec()
 		{
 		case SceneID_Title:
 			//ゲーム中のを止める
-			StopSoundMem(soundManager->GetSoundData(sound::title));
-
-			break;
-		case SceneID_SelectCharacter:
-			//ゲーム外のを止める
 			StopSoundMem(soundManager->GetSoundData(sound::Play));
-
+			IsPlayingMusic = false;
+			IsGameScene = false;
+			break;
+		case SceneID_Play:
+			//ゲーム外のを止める
+			StopSoundMem(soundManager->GetSoundData(sound::title));
+			IsPlayingMusic = false;
+			IsGameScene = true;
 			break;
 		default:
 			break;

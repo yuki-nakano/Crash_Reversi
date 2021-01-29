@@ -1352,6 +1352,16 @@ void PlayScene::Exec()
 
 			resultFlameCount = 121;
 			PlaySoundMem(soundManager->GetSoundData(sound::Result), DX_PLAYTYPE_NORMAL, TRUE);
+
+			if (resultFlameCount > 300)
+			{
+				if (IsKeyPushed(KEY_INPUT_RETURN))
+				{
+					FinishedGame = true;
+				
+					GameManager::GetInstance()->SetIsGameScene(false);
+				}
+			}
 		}
 
 		break;

@@ -22,6 +22,8 @@ private:
 	static SceneID		m_NextSceneID;			//次に作るシーンのID
 
 	SoundManager* soundManager = nullptr;
+	bool IsPlayingMusic = false;
+	bool IsGameScene = false;
 };
 
 #endif // !SCENEMANAGER_H
