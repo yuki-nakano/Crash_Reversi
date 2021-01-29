@@ -211,10 +211,14 @@ void SelectCharacterScene::Exec()
 	}
 	else if (IsKeyPushed(KEY_INPUT_DOWN))
 	{
-		if (Choice <= 4)
+		if (Choice <= 2)
 		{
 			Choice += 2;
 		}
+		/*if (Choice <= 4)
+		{
+			Choice += 2;
+		}*/
 	}
 	else if (IsKeyPushed(KEY_INPUT_RIGHT))
 	{
