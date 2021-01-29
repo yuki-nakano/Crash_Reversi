@@ -17,9 +17,7 @@ SelectNumberOfPeopleScene::SelectNumberOfPeopleScene()
 	TextureData::Player4 = LoadGraph("res/4人であそぶ.png");
 
 	soundManager = SoundManager::GetInstance();
-	//soundManager->LoadSceneSound(SceneID_SelectNumberOfPeople);
-	StopSoundMem(soundManager->GetSoundData(sound::title));
-	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
+	soundManager->LoadSceneSound(SceneID_SelectNumberOfPeople);
 
 	SceneBase::back_posx1 = 0.0f;
 	SceneBase::back_posy1 = 0.0f;
@@ -40,7 +38,7 @@ SelectNumberOfPeopleScene::SelectNumberOfPeopleScene()
 SelectNumberOfPeopleScene::~SelectNumberOfPeopleScene()
 {
 	TextureData::DeleteTex();
-	//soundManager->DeleteSceneSound(SceneID_Title);
+	soundManager->DeleteSceneSound(SceneID_SelectNumberOfPeople);
 }
 
 void SelectNumberOfPeopleScene::Exec()

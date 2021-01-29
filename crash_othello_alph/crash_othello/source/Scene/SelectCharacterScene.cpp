@@ -98,9 +98,7 @@ SelectCharacterScene::SelectCharacterScene()
 	TextureData::SetCursor4			= LoadGraph("res/キャラ確定枠４ｐ.png");
 
 	soundManager = SoundManager::GetInstance();
-	//soundManager->LoadSceneSound(SceneID_SelectCharacter);
-	StopSoundMem(soundManager->GetSoundData(sound::title));
-	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
+	soundManager->LoadSceneSound(SceneID_SelectCharacter);
 
 	SceneBase::back_posx1 = 0.0f;
 	SceneBase::back_posy1 = 0.0f;
@@ -122,7 +120,7 @@ SelectCharacterScene::SelectCharacterScene()
 SelectCharacterScene::~SelectCharacterScene()
 {	
 	TextureData::DeleteTex();
-	soundManager->DeleteSceneSound(SceneID_Title);
+	soundManager->DeleteSceneSound(SceneID_SelectNumberOfPeople);
 }	
 
 void SelectCharacterScene::Exec()
@@ -211,10 +209,14 @@ void SelectCharacterScene::Exec()
 	}
 	else if (IsKeyPushed(KEY_INPUT_DOWN))
 	{
-		if (Choice <= 4)
+		if (Choice <= 2)
 		{
 			Choice += 2;
 		}
+		/*if (Choice <= 4)
+		{
+			Choice += 2;
+		}*/
 	}
 	else if (IsKeyPushed(KEY_INPUT_RIGHT))
 	{

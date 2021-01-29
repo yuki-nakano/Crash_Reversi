@@ -1,13 +1,5 @@
 #include "../common.h"
 
-		
-//int back_posx1 = 0;
-//int back_posy1 = 0;
-
-//int back_posx4 = 1280;
-//int back_posy4 = 0;
-
-
 TitleScene::TitleScene()
 {
 	SceneBase::Choice_Min = 1;
@@ -41,13 +33,11 @@ TitleScene::TitleScene()
 	soundManager = SoundManager::GetInstance();
 	soundManager->LoadSceneSound(SceneID_Title);
 
-	StopSoundMem(soundManager->GetSoundData(sound::title));
-	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 }
 TitleScene::~TitleScene()
 {
-		TextureData::DeleteTex();
-	//soundManager->DeleteSceneSound(SceneID_Title);
+	TextureData::DeleteTex();
+	soundManager->DeleteSceneSound(SceneID_Title);
 }
 void TitleScene::Exec()
 {

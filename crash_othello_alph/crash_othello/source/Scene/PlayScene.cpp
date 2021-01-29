@@ -527,8 +527,6 @@ PlayScene::PlayScene()
 
 	soundManager = SoundManager::GetInstance();
 	soundManager->LoadSceneSound(SceneID_Play);
-
-	PlaySoundMem(soundManager->GetSoundData(SceneID_Play), DX_PLAYTYPE_LOOP, FALSE);
 }
 
 PlayScene::~PlayScene()

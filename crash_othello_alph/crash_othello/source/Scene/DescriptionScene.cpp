@@ -38,16 +38,13 @@ DescriptionScene::DescriptionScene()
 	TextureData::Character1 = LoadGraph("res/インビジブルショット立ち絵.png");
 
 	soundManager = SoundManager::GetInstance();
-	//soundManager->LoadSceneSound(SceneID_Description);
-
-	StopSoundMem(soundManager->GetSoundData(sound::title));
-	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
+	soundManager->LoadSceneSound(SceneID_Description);
 }
 
 DescriptionScene::~DescriptionScene()
 {
 	TextureData::DeleteTex();
-	//soundManager->DeleteSceneSound(SceneID_Description);
+	soundManager->DeleteSceneSound(SceneID_Description);
 }
 
 void DescriptionScene::Exec()
