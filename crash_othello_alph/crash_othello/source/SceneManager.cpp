@@ -6,6 +6,8 @@ SceneID SceneManager::m_NextSceneID = SceneID_Invalid;
 SceneManager::SceneManager()
 	:m_pScene(nullptr)
 {
+	soundManager = SoundManager::GetInstance();
+
 	//最初に実行するシーンを作成する
 	SetNextScene(SceneID_Title);
 	m_pScene = create_NextScene();
@@ -24,9 +26,40 @@ void SceneManager::Exec()
 		return;
 	}
 
+	switch (GameManager::GetInstance()->GetIsGameScene())
+	{
+	case true:
+		//ゲーム中
+		
+		
+		break;
+	case false:
+		//ゲーム外
+
+
+		break;
+	}
+
 	m_pScene->Exec();
 	if (m_pScene->IsEnd())
 	{
+		//音楽止める
+		switch (m_NextSceneID)
+		{
+		case SceneID_Title:
+			//ゲーム中のを止める
+			
+
+			break;
+		case SceneID_SelectCharacter:
+			//ゲーム外のを止める
+
+
+			break;
+		default:
+			break;
+		}
+
 		delete m_pScene;
 		m_pScene = create_NextScene();
 	}

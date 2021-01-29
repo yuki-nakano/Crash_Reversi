@@ -1,8 +1,6 @@
 ﻿#ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include "Definition.h"
-
 class SceneManager
 {
 public:
@@ -22,6 +20,8 @@ private:
 private:
 	class SceneBase* m_pScene;				//実行中のシーン
 	static SceneID		m_NextSceneID;			//次に作るシーンのID
+
+	SoundManager* soundManager = nullptr;
 };
 
 #endif // !SCENEMANAGER_H

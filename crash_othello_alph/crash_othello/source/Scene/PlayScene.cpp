@@ -167,20 +167,19 @@ int TextureResultNumberBlack[10];
 int TextureResultNumberWhite[10];
 int TexturePlayerNumber[4];
 int TextureSheets[4];
-int TextureWin[4];
+int TextureWin[5];
 
 PlayScene::PlayScene()
 {
-	
 	SceneManager::SetNextScene(SceneID_Title);
 	gameManager = GameManager::GetInstance();
 	othello = Othello::GetInstance();
 
-	maxPlayer = 2;// gameManager->GetMaxPlayer();
-	Character[0] = SceneBase::P1.Character;
-	Character[1] = SceneBase::P2.Character;
-	Character[2] = SceneBase::P3.Character;
-	Character[3] = SceneBase::P4.Character;
+	maxPlayer = gameManager->GetMaxPlayer();
+	Character[0] = gameManager->GetPlayer1() - 1;
+	Character[1] = gameManager->GetPlayer2() - 1;
+	Character[2] = gameManager->GetPlayer3() - 1;
+	Character[3] = gameManager->GetPlayer4() - 1;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -524,6 +523,7 @@ PlayScene::PlayScene()
 	TextureWin[1] = LoadGraph("res/GameScene/リザルト/2Pの勝利.png");
 	TextureWin[2] = LoadGraph("res/GameScene/リザルト/3Pの勝利.png");
 	TextureWin[3] = LoadGraph("res/GameScene/リザルト/4Pの勝利.png");
+	TextureWin[4] = LoadGraph("res/GameScene/リザルト/ひきわけ.png");
 
 	soundManager = SoundManager::GetInstance();
 	soundManager->LoadSceneSound(SceneID_Play);
@@ -591,116 +591,116 @@ void PlayScene::Exec()
 	//		TextureBackGround_posY_2[i] -= 1440;
 	//	}
 	//}
-
+	//
 	//デバッグ用
-	if (IsKeyPushed(KEY_INPUT_R))
-	{
-		OwnPieceRed = 0;
-		OwnPieceBlue = 0;
-		OwnPieceBlack = 0;
-		OwnPieceWhite = 0;
-
-		for (int i = 0; i < 4; i++)
-		{
-			skillState[i] = kUsedSkill;
-		}
-
-		result[0] = 19;
-		result[1] = 13;
-		result[2] = 10;
-		result[3] = 19;
-		result[4] = 3;
-
-		for (int i = 0; i < 4; i++)
-		{
-			countPiece[i] = result[i];
-			order[i] = i;
-		}
-
-		int j = 0;
-
-		for (int i = 0; i < MaxPiece; i++)
-		{
-			result[j]--;
-
-			resultColor[i] = j;
-
-			if (result[j] == 0)
-			{
-				j++;
-			}
-		}
-
-		MaxOrder = 0;
-
-		resultCount = 0;
-		resultFlameCount = 0;
-
-		for (int i = 0; i < 4; i++)
-		{
-			orderNumber[i] = countPiece[i];
-			order[i] = i;
-		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = i + 1; j < 4; j++)
-			{
-				if (orderNumber[i] > orderNumber[j])
-				{
-					int tmp = order[i];
-					order[i] = order[j];
-					order[j] = tmp;
-
-					int tmp_2 = orderNumber[i];
-					orderNumber[i] = orderNumber[j];
-					orderNumber[j] = tmp_2;
-
-				}
-			}
-		}
-
-		for (int i = 0; i < maxPlayer; i++)
-		{
-			if (i == order[maxPlayer - 1])
-			{
-				continue;
-			}
-
-			if (orderNumber[maxPlayer - 1] == orderNumber[i])
-			{
-				resultDraw = true;
-			}
-		}
-
-		phase = kResultPhase;
-	}
-	if (IsKeyPushed(KEY_INPUT_N))
-	{
-		switch (turn)
-		{
-		case kRed:
-			OwnPieceRed--;
-			break;
-		case kBlue:
-			OwnPieceBlue--;
-			break;
-		case kBlack:
-			OwnPieceBlack--;
-			break;
-		case kWhite:
-			OwnPieceWhite--;
-			break;
-		case kBlank:
-			break;
-		default:
-			break;
-		}
-
-		phase = kFinishPhase;
-
-		piece[turnNumber].color = kBlank;
-	}
+	//if (IsKeyPushed(KEY_INPUT_R))
+	//{
+	//	OwnPieceRed = 0;
+	//	OwnPieceBlue = 0;
+	//	OwnPieceBlack = 0;
+	//	OwnPieceWhite = 0;
+	//
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		skillState[i] = kUsedSkill;
+	//	}
+	//
+	//	result[0] = 19;
+	//	result[1] = 13;
+	//	result[2] = 10;
+	//	result[3] = 19;
+	//	result[4] = 3;
+	//
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		countPiece[i] = result[i];
+	//		order[i] = i;
+	//	}
+	//
+	//	int j = 0;
+	//
+	//	for (int i = 0; i < MaxPiece; i++)
+	//	{
+	//		result[j]--;
+	//
+	//		resultColor[i] = j;
+	//
+	//		if (result[j] == 0)
+	//		{
+	//			j++;
+	//		}
+	//	}
+	//
+	//	MaxOrder = 0;
+	//
+	//	resultCount = 0;
+	//	resultFlameCount = 0;
+	//
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		orderNumber[i] = countPiece[i];
+	//		order[i] = i;
+	//	}
+	//
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		for (int j = i + 1; j < 4; j++)
+	//		{
+	//			if (orderNumber[i] > orderNumber[j])
+	//			{
+	//				int tmp = order[i];
+	//				order[i] = order[j];
+	//				order[j] = tmp;
+	//
+	//				int tmp_2 = orderNumber[i];
+	//				orderNumber[i] = orderNumber[j];
+	//				orderNumber[j] = tmp_2;
+	//
+	//			}
+	//		}
+	//	}
+	//
+	//	for (int i = 0; i < maxPlayer; i++)
+	//	{
+	//		if (i == order[maxPlayer - 1])
+	//		{
+	//			continue;
+	//		}
+	//
+	//		if (orderNumber[maxPlayer - 1] == orderNumber[i])
+	//		{
+	//			resultDraw = true;
+	//		}
+	//	}
+	//
+	//	phase = kResultPhase;
+	//}
+	//if (IsKeyPushed(KEY_INPUT_N))
+	//{
+	//	switch (turn)
+	//	{
+	//	case kRed:
+	//		OwnPieceRed--;
+	//		break;
+	//	case kBlue:
+	//		OwnPieceBlue--;
+	//		break;
+	//	case kBlack:
+	//		OwnPieceBlack--;
+	//		break;
+	//	case kWhite:
+	//		OwnPieceWhite--;
+	//		break;
+	//	case kBlank:
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//
+	//	phase = kFinishPhase;
+	//
+	//	piece[turnNumber].color = kBlank;
+	//}
 
 
 	if (IsKeyPushed(KEY_INPUT_ESCAPE))
@@ -810,7 +810,7 @@ void PlayScene::Exec()
 	case kDecideThetaPhase:
 		
 		//でバック用
-		if (IsKeyPushed(KEY_INPUT_A))
+		/*if (IsKeyPushed(KEY_INPUT_A))
 		{
 			switch (turn)
 			{
@@ -835,7 +835,7 @@ void PlayScene::Exec()
 			pos_X_kami = 0;
 			pos_Y_kami = 0;
 			phase = kSkillKaminoitte;
-		}
+		}*/
 
 		theta += 2;
 
@@ -1765,11 +1765,11 @@ void PlayScene::Draw()
 		{
 			if (resultDraw)
 			{
-
+				DrawGraph(175, 176, TextureWin[4], TRUE);
 			}
 			else
 			{
-				DrawGraph(175, 176, TextureWin[order[3]], TRUE);
+				DrawGraph(175, 176, TextureWin[order[maxPlayer - 1]], TRUE);
 			}
 		}
 

@@ -289,12 +289,14 @@ void SelectCharacterScene::Exec()
 		{
 		case 1:
 			P1.Character = NowChoise;
+			GameManager::GetInstance()->SetPlayer1(NowChoise);
 			SelectPlayer ++;
 			break;
 		case 2:
 			if (P1.Character != NowChoise)
 			{
 				P2.Character = NowChoise;
+				GameManager::GetInstance()->SetPlayer2(NowChoise);
 				if (SceneBase::People_Max == 2)
 				{
 					SceneManager::SetNextScene(SceneID_Play);
@@ -310,6 +312,7 @@ void SelectCharacterScene::Exec()
 			if (P1.Character != NowChoise && P2.Character != NowChoise)
 			{
 				P3.Character = NowChoise;
+				GameManager::GetInstance()->SetPlayer3(NowChoise);
 				SelectPlayer++;
 			}
 			break;
@@ -317,6 +320,7 @@ void SelectCharacterScene::Exec()
 			if (P1.Character != NowChoise && P2.Character != NowChoise && P3.Character != NowChoise)
 			{
 				P4.Character = NowChoise;
+				GameManager::GetInstance()->SetPlayer4(NowChoise);
 				SceneManager::SetNextScene(SceneID_Play);
 				SelectPlayer++;
 			}
@@ -814,8 +818,9 @@ void SelectCharacterScene::Draw()
 
 bool SelectCharacterScene::IsEnd() const
 {
-	if((IsKeyPushed(KEY_INPUT_RETURN) && SelectPlayer == 5) || (SceneBase::People_Max == 2 && SelectPlayer == 3) ||(IsKeyPushed(KEY_INPUT_ESCAPE)))
+	if((IsKeyPushed(KEY_INPUT_RETURN) && SelectPlayer == 5) || (GameManager::GetInstance()->GetMaxPlayer() == 2 && SelectPlayer == 3) ||(IsKeyPushed(KEY_INPUT_ESCAPE)))
 	{
+		SceneManager::SetNextScene(SceneID_Play);
 		TextureData::DeleteTex();
 		return true;
 	}

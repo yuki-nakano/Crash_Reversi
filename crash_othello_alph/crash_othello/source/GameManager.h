@@ -1,6 +1,8 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include "../source/SoundManager.h"
+
 class GameManager
 {
 private:
@@ -18,13 +20,14 @@ public:
 	void SetPlayer2(int player_) { player_2 = player_; };
 	void SetPlayer3(int player_) { player_3 = player_; };
 	void SetPlayer4(int player_) { player_4 = player_; };
+	void SetIsGameScene(bool IsGameScene_) { IsGameScene = IsGameScene; };
 
 	int GetMaxPlayer() { return maxPlayer; };
 	int GetPlayer1() { return player_1; };
 	int GetPlayer2() { return player_2; };
 	int GetPlayer3() { return player_3; };
 	int GetPlayer4() { return player_4; };
-
+	bool GetIsGameScene() { return IsGameScene; };
 
 private:
 	int maxPlayer;
@@ -33,6 +36,7 @@ private:
 	int player_3;
 	int player_4;
 
+	bool IsGameScene = false;
 
 };
 
