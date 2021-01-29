@@ -1,21 +1,13 @@
 ﻿#ifndef DEFINITION_H
 #define DEFINITION_H
 
-const int Widht = 1280;
-const int Height = 720;
-
-const int MaxPiece = 64;
-
-const int row = 8;
-const int col = 8;
-
-enum Color
+class Definition
 {
-	kRed,
-	kBlue,
-	kBlack,
-	kWhite,
-	kBlank,
+public:
+	const int Widht = 1280;
+	const int Height = 720;
+
+	const int MaxPiece = 64;
 };
 
 enum SceneID
@@ -23,7 +15,7 @@ enum SceneID
 	//! タイトルシーン
 	SceneID_Title,
 	//! オプションシーン
-	SceneID_Option,
+	//	SceneID_Option,
 	//! 説明シーン
 	SceneID_Description,
 	//! 人数選択シーン
@@ -31,12 +23,19 @@ enum SceneID
 	//! キャラクター選択シーン
 	SceneID_SelectCharacter,
 	//!	ステージ選択シーン
-	SceneID_SelectStage,
+			SceneID_SelectStage,
 	//! プレイシーン
 	SceneID_Play,
 	//! スキル確認シーン
-	SceneID_CheckSkill,
+	//	SceneID_CheckSkill,
+	//! リザルトシーン
+	//	SceneID_Result,
+	//! 勝敗
+	//	SceneID_Outcome,
+	//! タイトルに戻る
+	//	SceneID_BacktoTitle,
 	
+
 	SceneID_Max,
 	SceneID_Invalid,	//無効値
 };

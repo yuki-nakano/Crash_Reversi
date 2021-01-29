@@ -1,7 +1,7 @@
 ﻿#ifndef PIECE_H
 #define PIECE_H
 
-#include "Definition.h"
+#include "Status.h"
 
 class Piece
 {

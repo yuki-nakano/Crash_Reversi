@@ -1,25 +1,4 @@
 ﻿#include "othello.h"
-#include "common.h"
-
-Othello* Othello::othello = nullptr;
-
-Othello::Othello()
-{
-}
-
-void Othello::CreateInstance()
-{
-	if (othello == nullptr)
-	{
-		othello = new Othello();
-	}
-}
-
-void Othello::DeleteInstance()
-{
-	delete othello;
-	othello = nullptr;
-}
 
 void Othello::InitBoard(int map[][row])
 {

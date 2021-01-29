@@ -4,8 +4,10 @@
 struct Player
 {
 public:
-	int Character;
-	//得点の保存にも使う予定
+	static int Character1;
+	static int Character2;
+	static int Character3;
+	static int Character4;
 
 private:
 
@@ -26,26 +28,21 @@ public:
 
 	static int Stage;
 
-	static float back_posx1;
-	static float back_posy1;
-	static float back_posx2;
-	static float back_posy2;
-	static float back_posx3;
-	static float back_posy3;
-	static float back_posx4;
-	static float back_posy4;
-	static float back_posx5;
-	static float back_posy5;
-	static float back_posx6;
-	static float back_posy6;
+	static int back_posx1;
+	static int back_posy1;
+	static int back_posx2;
+	static int back_posy2;
+	static int back_posx3;
+	static int back_posy3;
+	static int back_posx4;
+	static int back_posy4;
+	static int back_posx5;
+	static int back_posy5;
+	static int back_posx6;
+	static int back_posy6;
 
-	static float scroll_speedx;
-	static float scroll_speedy;
-
-	Player P1;
-	Player P2;
-	Player P3;
-	Player P4;
+	static int scroll_speedx;
+	static int scroll_speedy;
 
 	SceneBase();
 	virtual ~SceneBase();
@@ -57,6 +54,8 @@ public:
 
 	virtual bool IsEnd() const = 0; //シーンが終了したかどうかを返す
 };
+
+
 
 //static Player P1;
 //static Player P2;

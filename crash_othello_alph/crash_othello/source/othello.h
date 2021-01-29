@@ -1,34 +1,26 @@
 ﻿#ifndef OTHELLO_H
 #define OTHELLO_H
 
-#include "Definition.h"
+#include "common.h"
+
+const int row = 8;
+const int col = 8;
+
+enum Direction
+{
+	kUp,
+	kUpRight,
+	kRight,
+	kDownRight,
+	kDown,
+	kDownLeft,
+	kLeft,
+	kUpLeft
+};
 
 class Othello
 {
-private:
-	enum Direction
-	{
-		kUp,
-		kUpRight,
-		kRight,
-		kDownRight,
-		kDown,
-		kDownLeft,
-		kLeft,
-		kUpLeft
-	};
-
-private:
-	Othello();
-	static Othello* othello;
-	
-
 public:
-	static void CreateInstance();
-	static void DeleteInstance();
-
-	static 	Othello* GetInstance() { return othello; };
-
 	void InitBoard(int map[][row]);
 	void TurnOverMethod(int* X, int* Y, int map[][row], Color phase);
 
@@ -45,9 +37,6 @@ public:
 	bool IsInitialized = false;
 	int X = 0;
 	int Y = 0;
-
-
-
 };
 
 #endif // !OTHELLO_H

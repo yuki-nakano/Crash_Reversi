@@ -57,6 +57,9 @@ void Collision::ReflectPiece(Piece piece[], int num)
 				piece[i].SetTheta(tmpTheta);
 
 				piece[i].SetV(piece[i].GetV() + (piece[num].GetV() * (1 - piece[num].e)));
+				/*piece[i].SetV(piece[num].GetV() / 1.55f);
+
+				piece[num].SetV(piece[num].GetV() / 1.1f);*/
 
 				piece[num].SetTheta(fmodf(360.0f - piece[num].GetTheta() + atanTheta * 2, 360.0f));
 

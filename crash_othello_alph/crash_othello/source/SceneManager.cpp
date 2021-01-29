@@ -57,9 +57,9 @@ SceneBase* SceneManager::create_NextScene()
 	case SceneID_Title:
 		next = new TitleScene();
 		break;
-	case SceneID_Option:
-		next = new OptionScene();
-		break;
+	//case SceneID_Option:					//初期段階での仮シーン
+	//	next = new OptionScene();
+	//	break;
 	case SceneID_Description:
 		next = new DescriptionScene();
 		break;
@@ -69,12 +69,24 @@ SceneBase* SceneManager::create_NextScene()
 	case SceneID_SelectCharacter:
 		next = new SelectCharacterScene();
 		break;
-	case SceneID_SelectStage:
-		next = new SelectStageScene();
-		break;
+	//case SceneID_SelectStage:
+	//	next = new SelectStageScene();
+	//	break;
 	case SceneID_Play:
 		next = new PlayScene();
 		break;
+	//case SceneID_CheckSkill:				//初期段階での仮シーン
+	//	next = new CheckSkillScene();
+	//	break;
+	//case SceneID_Result:					//初期段階での仮シーン
+	//	next = new ResultScene();
+	//	break;
+	//case SceneID_Outcome:					//初期段階での仮シーン
+	//	next = new OutComeScene();
+	//	break;
+	//case SceneID_BacktoTitle:				//初期段階での仮シーン
+	//	next = new BackToTitleScene();
+	//	break;
 	default:
 		break;
 	}

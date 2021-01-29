@@ -1,57 +1,55 @@
-#include "../common.h"
+Ôªø#include "../common.h"
 
-		
-//int back_posx1 = 0;
-//int back_posy1 = 0;
-
-//int back_posx4 = 1280;
-//int back_posy4 = 0;
-
+//„Éá„Éê„ÉÉ„Ç∞Áî®
+//#define DEBUG
 
 TitleScene::TitleScene()
 {
+
 	SceneBase::Choice_Min = 1;
 	SceneBase::Choice_Max = 2;
 
-	SceneBase::back_posx1 = 0.0f;
-	SceneBase::back_posy1 = 0.0f;
-	SceneBase::back_posx2 = 0.0f;
-	SceneBase::back_posy2 = -720.0f;
-	SceneBase::back_posx3 = 1280.0f;
-	SceneBase::back_posy3 = -720.0f;
-	SceneBase::back_posx4 = 1280.0f;
-	SceneBase::back_posy4 = -1440.0f;
-	SceneBase::back_posx5 = 0.0f;
-	SceneBase::back_posy5 = 720.0f;
-	SceneBase::back_posx6 = 1280.0f;
-	SceneBase::back_posy6 = 0.0f;
+	//	  4, 5, 6
+	// 1, 2, 3
+	SceneBase::back_posx1 = -1280;
+	SceneBase::back_posy1 = 0;
+	SceneBase::back_posx2 = 0;
+	SceneBase::back_posy2 = 0;	
+	SceneBase::back_posx3 = 1280;
+	SceneBase::back_posy3 = 0;
+	SceneBase::back_posx4 = 0;
+	SceneBase::back_posy4 = -1280;
+	SceneBase::back_posx5 = 1280;
+	SceneBase::back_posy5 = -1280;
+	SceneBase::back_posx6 = 2560;
+	SceneBase::back_posy6 = -1280;
+	
+	SceneBase::scroll_speedx = 2;
+	SceneBase::scroll_speedy = 2;
 
-	SceneBase::scroll_speedx = 8.0f;
-	SceneBase::scroll_speedy = 4.5f;
-
-	//âπê∫ÇÃì«Ç›çûÇ›(ïœêîñºÇÕâºíuÇ´)
-	SoundData::A = LoadSoundMem("res/Sound/START!!.mp3"/*"res/Sound/retroparty.mp3"*/);
-	ChangeVolumeSoundMem(255 * SceneBase::VolumePer / 100, SoundData::A);
-
-	//âÊëúÇÃì«Ç›çûÇ›
-	TextureData::Title = LoadGraph("res/É^ÉCÉgÉãÉçÉS2.png");
-	TextureData::BackGround_BLUE = LoadGraph("res/haikei_blue.png");
-	TextureData::Button_Start = LoadGraph("res/É^ÉCÉgÉãÉ{É^Éì_ÉXÉ^Å[Ég.png");
-	TextureData::Button_Rule = LoadGraph("res/É^ÉCÉgÉãÉ{É^Éì_ÉãÅ[Éã.png");
+	//ÁîªÂÉè„ÅÆË™≠„ÅøËæº„Åø
+	TextureData::Title = LoadGraph("res/„Çø„Ç§„Éà„É´„É≠„Ç¥2.png");
+	TextureData::BackGround_BLUE = LoadGraph("res/haikei.png");
+	TextureData::Button_Start = LoadGraph("res/„Çø„Ç§„Éà„É´„Éú„Çø„É≥_„Çπ„Çø„Éº„Éà.png");
+	TextureData::Button_Rule = LoadGraph("res/„Çø„Ç§„Éà„É´„Éú„Çø„É≥_„É´„Éº„É´.png");
 
 	SceneBase::Choice = 0;
+
+	soundManager = SoundManager::GetInstance();
+	soundManager->LoadSceneSound(SceneID_Title);
+
+	StopSoundMem(soundManager->GetSoundData(sound::title));
+	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 }
+
 TitleScene::~TitleScene()
 {
-	
+	TextureData::DeleteTex();
+	//soundManager->DeleteSceneSound(SceneID_Title);
 }
+
 void TitleScene::Exec()
 {
-	if (CheckSoundMem(SoundData::A) != 1 && DrawGraph(back_posx4, back_posy4, TextureData::BackGround_BLUE, false) == 0)
-	{
-		PlaySoundMem(SoundData::A, DX_PLAYTYPE_LOOP, true);
-	}
-
 	back_posx1 -= scroll_speedx;
 	back_posy1 += scroll_speedy;
 	back_posx2 -= scroll_speedx;
@@ -64,46 +62,36 @@ void TitleScene::Exec()
 	back_posy5 += scroll_speedy;
 	back_posx6 -= scroll_speedx;
 	back_posy6 += scroll_speedy;
-	/*back_posx1 -= scroll_speed;
-	back_posx4 -= scroll_speed;*/
 
-	/*if (back_posx1 <= -1280)
+	if (back_posy1 >= 1280)
 	{
-		back_posx1 = 1280;
+		back_posx1 = 0;
+		back_posy1 = -1280;
 	}
-	if (back_posx4 <= -1280)
-	{
-		back_posx4 = 1280;
-	}*/
-	if (back_posx1 <= -1280)
-	{
-		back_posx1 = 1280;
-		back_posy1 = -720;
-	}
-	if (back_posx3 <= -1280)
-	{
-		back_posx3 = 1280;
-		back_posy3 = -720;
-	}
-	if (back_posx2 <= -1280)
+	if (back_posy2 >= 1280)
 	{
 		back_posx2 = 1280;
-		back_posy2 = -1440;
+		back_posy2 = -1280;
 	}
-	if (back_posx4 <= -1280)
+	if (back_posy3 >= 1280)
 	{
-		back_posx4 = 1280;
-		back_posy4 = -1440;
+		back_posx3 = 2560;
+		back_posy3 = -1280;
 	}
-	if (back_posx5 <= -1280)
+	if (back_posy4 >= 1280)
+	{
+		back_posx4 = 0;
+		back_posy4 = -1280;
+	}
+	if (back_posy5 >= 1280)
 	{
 		back_posx5 = 1280;
-		back_posy5 = 0;
+		back_posy5 = -1280;
 	}
-	if (back_posx6 <= -1280)
+	if (back_posy6 >= 1280)
 	{
-		back_posx6 = 1280;
-		back_posy6 = 0;
+		back_posx6 = 2560;
+		back_posy6 = -1280;
 	}
 
 	if (IsKeyPushed(KEY_INPUT_RIGHT))
@@ -111,10 +99,12 @@ void TitleScene::Exec()
 		if (Choice == 0)
 		{
 			Choice = 2;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice < Choice_Max)
 		{
 			Choice += 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
 	else if (IsKeyPushed(KEY_INPUT_LEFT))
@@ -122,21 +112,38 @@ void TitleScene::Exec()
 		if (Choice > Choice_Min)
 		{
 			Choice -= 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice == 0)
 		{
 			Choice = 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
-
+#ifdef DEBUG
 	if (Choice == 1 && IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
+		SceneManager::SetNextScene(SceneID_Play);
+	}
+	else if (Choice == 2 && IsKeyPushed(KEY_INPUT_RETURN))
+	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
+		SceneManager::SetNextScene(SceneID_Description);
+	}
+#else
+	if (Choice == 1 && IsKeyPushed(KEY_INPUT_RETURN))
+	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
 	}
 	else if (Choice == 2 && IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_Description);
 	}
+#endif
+	
 }
 
 void TitleScene::Draw()
@@ -165,17 +172,11 @@ void TitleScene::Draw()
 	}
 
 	DrawGraph(190, 30, TextureData::Title, true);
-		//âÊñ ç∂è„Ç…ÉfÉoÉbÉOópÇÃï∂éöÇçïÇ≈ï\é¶Ç∑ÇÈ
+		//ÁîªÈù¢Â∑¶‰∏ä„Å´„Éá„Éê„ÉÉ„Ç∞Áî®„ÅÆÊñáÂ≠ó„ÇíÈªí„ÅßË°®Á§∫„Åô„Çã
 	//DrawString(20, 20, "TitleScene", GetColor(0, 0, 0));
 }
 
 bool TitleScene::IsEnd() const
 {
-	if (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0)
-	{
-		StopSoundMem(SoundData::A);
-		DeleteSoundMem(SoundData::A);
-		TextureData::DeleteTex();
-		return true;
-	}
+		return (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0);
 }

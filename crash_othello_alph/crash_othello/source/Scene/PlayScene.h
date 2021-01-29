@@ -2,7 +2,6 @@
 #define PLAYSCENE_H
 
 #include "../common.h"
-#include "../GameManager.h"
 
 class PlayScene : public SceneBase
 {
@@ -15,6 +14,8 @@ public:
 
 	virtual bool IsEnd() const; //シーンが終了したかどうかを返す
 
+	SoundManager* soundManager = nullptr;
+
 private:
 	void Skill(Piece piece[], int num);
 
@@ -23,9 +24,6 @@ private:
 	void MAGUNETTO();
 
 private:
-	int maxPlayer = 0;
-	int Character[4];
-
 	int cutIn_y;
 	int cutIn_x;
 	int countCutIn;
@@ -49,8 +47,6 @@ private:
 	int HanabiCount;
 	int HanabiDistance;
 	bool Magunetto;
-	bool isMagunetto;
-	int magunettoNum;
 	bool Inbijiburu;
 
 	int pos_X_kami;
@@ -67,37 +63,8 @@ private:
 	int order[4];
 	int orderNumber[4];
 	int MaxOrder;
-	bool resultDraw = false;
 
 	bool FinishedGame = false;
-
-	int TextureBackGround_posX[3];
-	int TextureBackGround_posY[3];
-
-	int TextureBackGround_posX_2[3];
-	int TextureBackGround_posY_2[3];
-
-	int stage = 1;
-	
-	int page = 1;
-
-	int OwnPieceRed = 15;
-	int OwnPieceBlue = 15;
-	int OwnPieceBlack = 15;
-	int OwnPieceWhite = 15;
-
-	bool option = false;
-
-	int map[col][row];
-	
-	int previousMap[col][row];
-	Color turn;
-	
-	GameManager *gameManager = nullptr;
-	
-	Othello* othello = nullptr;
-	Piece piece[64];
-	Collision collision;
 };
 
 #endif // !PALYSCENE_H

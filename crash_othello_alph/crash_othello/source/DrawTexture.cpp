@@ -18,13 +18,12 @@ int TextureData::Desc_tex2;
 int TextureData::Desc_tex3;
 int TextureData::Desc_tex4;
 int TextureData::Desc_tex5;
-int TextureData::Desc_txt1;
-int TextureData::Desc_txt2;
-int TextureData::Desc_txt3;
-int TextureData::Desc_txt4;
-int TextureData::Desc_txt5;
-
 int TextureData::Desc_Desc;
+int TextureData::Desc_Text1;
+int TextureData::Desc_Text2;
+int TextureData::Desc_Text3;
+int TextureData::Desc_Text4;
+int TextureData::Desc_Text5;
 //int TextureData::
 
 int TextureData::NumberOfPeople;
@@ -56,6 +55,10 @@ int TextureData::Skill_Desc4;
 int TextureData::Skill_Desc5;
 int TextureData::Skill_Desc6;
 int TextureData::Icon;
+int TextureData::Icon1;
+int TextureData::Icon2;
+int TextureData::Icon3;
+int TextureData::Icon4;
 
 int TextureData::SetCursor1;
 int TextureData::SetCursor2;
@@ -136,12 +139,12 @@ bool TextureData::DeleteTex()
 	DeleteGraph(TextureData::Desc_tex3);
 	DeleteGraph(TextureData::Desc_tex4);
 	DeleteGraph(TextureData::Desc_tex5);
-	DeleteGraph(TextureData::Desc_txt1);
-	DeleteGraph(TextureData::Desc_txt2);
-	DeleteGraph(TextureData::Desc_txt3);
-	DeleteGraph(TextureData::Desc_txt4);
-	DeleteGraph(TextureData::Desc_txt5);
 	DeleteGraph(TextureData::Desc_Desc);
+	DeleteGraph(TextureData::Desc_Text1);
+	DeleteGraph(TextureData::Desc_Text2);
+	DeleteGraph(TextureData::Desc_Text3);
+	DeleteGraph(TextureData::Desc_Text4);
+	DeleteGraph(TextureData::Desc_Text5);
 	DeleteGraph(TextureData::NumberOfPeople);
 	DeleteGraph(TextureData::CharacterSelect);
 	DeleteGraph(TextureData::Character1);
@@ -168,6 +171,10 @@ bool TextureData::DeleteTex()
 	DeleteGraph(TextureData::Skill_Desc5);
 	DeleteGraph(TextureData::Skill_Desc6);
 	DeleteGraph(TextureData::Icon);
+	DeleteGraph(TextureData::Icon1);
+	DeleteGraph(TextureData::Icon2);
+	DeleteGraph(TextureData::Icon3);
+	DeleteGraph(TextureData::Icon4);
 	DeleteGraph(TextureData::SetCursor1);
 	DeleteGraph(TextureData::SetCursor2);
 	DeleteGraph(TextureData::SetCursor3);

@@ -1,11 +1,24 @@
 ﻿#include "../common.h"
 
-//Othello othello;
-//int map[col][row];
-//int previousMap[col][row];
-//Color turn;
-//Piece piece[64];
-//Collision collision;
+//デバッグ用
+#define DEBUG
+//#define FPS
+
+int stage = 1;
+int Character[4];
+
+int OwnPieceRed;
+int OwnPieceBlue;
+int OwnPieceBlack;
+int OwnPieceWhite;
+
+//Definition definition_G;
+Othello othello;
+int map[col][row];
+int previousMap[col][row];
+Color turn;
+Piece piece[64];
+Collision collision;
 
 enum
 {
@@ -74,30 +87,6 @@ enum
 	kResultTitle,
 
 	kReturnTitle,
-
-	Description,
-	Esc,
-
-	DescFrame,
-	DescLeft,
-	DescRight,
-
-	Desc_Light,
-	Desc_Dark,
-
-	Desc_tex1,
-	Desc_tex2,
-	Desc_tex3,
-	Desc_tex4,
-	Desc_tex5,
-
-	Desc_txt1,
-	Desc_txt2,
-	Desc_txt3,
-	Desc_txt4,
-	Desc_txt5,
-
-	Desc_Desc,
 
 	kTextureMax
 };
@@ -171,25 +160,42 @@ int TextureWin[4];
 
 PlayScene::PlayScene()
 {
-	SceneManager::SetNextScene(SceneID_Title);
-	gameManager = GameManager::GetInstance();
-	othello = Othello::GetInstance();
+	SceneBase::back_posx1 = -1280;
+	SceneBase::back_posy1 = 0;
+	SceneBase::back_posx2 = 0;
+	SceneBase::back_posy2 = 0;
+	SceneBase::back_posx3 = 1280;
+	SceneBase::back_posy3 = 0;
+	SceneBase::back_posx4 = 0;
+	SceneBase::back_posy4 = -1280;
+	SceneBase::back_posx5 = 1280;
+	SceneBase::back_posy5 = -1280;
+	SceneBase::back_posx6 = 2560;
+	SceneBase::back_posy6 = -1280;
 
-	maxPlayer = 2;// gameManager->GetMaxPlayer();
-	Character[0] = SceneBase::P1.Character;
-	Character[1] = SceneBase::P2.Character;
-	Character[2] = SceneBase::P3.Character;
-	Character[3] = SceneBase::P4.Character;
+	SceneBase::scroll_speedx = 2;
+	SceneBase::scroll_speedy = 2;
 
-	for (int i = 0; i < 3; i++)
-	{
-		TextureBackGround_posX[i] = 0;
-		TextureBackGround_posY[i] = (i - 1) * 720;
+	OwnPieceRed = 15;
+	OwnPieceBlue = 15;
+	OwnPieceBlack = 15;
+	OwnPieceWhite = 15;
+	
+#ifdef DEBUG
+	Character[0] = 0;
+	Character[1] = 1;
+	Character[2] = 2;
+	Character[3] = 3;
 
-		TextureBackGround_posX_2[i] = 1280;
-		TextureBackGround_posY_2[i] = (i - 2) * 720;
-	}
+	stage = 1;
+#else
+	Character[0] = Player::Character1 - 1;
+	Character[1] = Player::Character2 - 1;
+	Character[2] = Player::Character3 - 1;
+	Character[3] = Player::Character4 - 1;
 
+	stage = 1;
+#endif
 	for (int i = 0; i < MaxPiece; i++)
 	{
 		piece[i].color = kBlank;
@@ -199,51 +205,6 @@ PlayScene::PlayScene()
 	for (int i = 0; i < 4; i++)
 	{
 		skillState[i] = kInactiveSkill;
-	}
-
-	if (maxPlayer == 2)
-	{
-		OwnPieceRed = 30;
-		OwnPieceBlue = 30;
-
-		piece[MaxPiece - 1].color = kRed;
-		piece[MaxPiece - 1].pos_x = 640 - 24.625f;
-		piece[MaxPiece - 1].pos_y = 360 - 24.625f;
-
-		piece[MaxPiece - 2].color = kBlue;
-		piece[MaxPiece - 2].pos_x = 640 + 24.625f;
-		piece[MaxPiece - 2].pos_y = 360 - 24.625f;
-
-		piece[MaxPiece - 3].color = kBlue;
-		piece[MaxPiece - 3].pos_x = 640 - 24.625f;
-		piece[MaxPiece - 3].pos_y = 360 + 24.625f;
-
-		piece[MaxPiece - 4].color = kRed;
-		piece[MaxPiece - 4].pos_x = 640 + 24.625f;
-		piece[MaxPiece - 4].pos_y = 360 + 24.625f;
-	}
-	else if (maxPlayer == 4)
-	{
-		OwnPieceRed = 15;
-		OwnPieceBlue = 15;
-		OwnPieceBlack = 15;
-		OwnPieceWhite = 15;
-
-		piece[MaxPiece - 1].color = kRed;
-		piece[MaxPiece - 1].pos_x = 640 - 24.625f;
-		piece[MaxPiece - 1].pos_y = 360 - 24.625f;
-
-		piece[MaxPiece - 2].color = kBlue;
-		piece[MaxPiece - 2].pos_x = 640 + 24.625f;
-		piece[MaxPiece - 2].pos_y = 360 - 24.625f;
-
-		piece[MaxPiece - 3].color = kBlack;
-		piece[MaxPiece - 3].pos_x = 640 - 24.625f;
-		piece[MaxPiece - 3].pos_y = 360 + 24.625f;
-
-		piece[MaxPiece - 4].color = kWhite;
-		piece[MaxPiece - 4].pos_x = 640 + 24.625f;
-		piece[MaxPiece - 4].pos_y = 360 + 24.625f;
 	}
 
 	Hanabi = false;
@@ -258,69 +219,23 @@ PlayScene::PlayScene()
 	cutIn_y = 0;
 	countCutIn = 0;
 
+	piece[MaxPiece - 1].color = kRed;
+	piece[MaxPiece - 1].pos_x = 640 - 24.625f;
+	piece[MaxPiece - 1].pos_y = 360 - 24.625f;
+
+	piece[MaxPiece - 2].color = kBlue;
+	piece[MaxPiece - 2].pos_x = 640 + 24.625f;
+	piece[MaxPiece - 2].pos_y = 360 - 24.625f;
+
+	piece[MaxPiece - 3].color = kBlack;
+	piece[MaxPiece - 3].pos_x = 640 - 24.625f;
+	piece[MaxPiece - 3].pos_y = 360 + 24.625f;
+
+	piece[MaxPiece - 4].color = kWhite;
+	piece[MaxPiece - 4].pos_x = 640 + 24.625f;
+	piece[MaxPiece - 4].pos_y = 360 + 24.625f;
+
 	FinishedEffect = false;
-
-
-	for (int i = 0; i < 64; i++)
-	{
-		map[i / 8][i % 8] = -1;
-	}
-
-	for (int col = 0; col <= 7; col++)
-	{
-		for (int row = 0; row <= 7; row++)
-		{
-			for (int i = 0; i < 64; i++)
-			{
-				if (piece[i].color == kBlank)
-				{
-					continue;
-				}
-
-				if (piece[i].pos_x > 443 + 49.25f * (row) &&
-					piece[i].pos_x < 443 + 49.25f * (row + 1) &&
-					piece[i].pos_y > 163 + 49.25f * (col) &&
-					piece[i].pos_y < 163 + 49.25f * (col + 1))
-				{
-					if (i == turnNumber)
-					{
-						map[col][row] = i;
-						posX = row;
-						posY = col;
-
-						continue;
-					}
-
-					if (map[col][row] != -1)
-					{
-						if (powf(piece[map[col][row]].pos_x - 465.5f + 49.25f * (row + 1), 2.0f) + powf(piece[map[col][row]].pos_y - 185.5f + 49.25f * (col + 1), 2.0f) <
-							powf(piece[i].pos_x - 465.5f + 49.25f * (row + 1), 2.0f) + powf(piece[i].pos_y - 185.5f + 49.25f * (col + 1), 2.0f))
-						{
-							continue;
-						}
-						else
-						{
-							map[col][row] = i;
-						}
-					}
-					else
-					{
-						map[col][row] = i;
-					}
-				}
-
-			}
-
-			map[col][row] == -1 ? map[col][row] = kBlank : map[col][row] = piece[map[col][row]].color;
-
-		}
-	}
-
-	for (int i = 0; i < 64; i++)
-	{
-		previousMap[i / 8][i % 8] = map[i / 8][i % 8];
-	}
-
 
 	Texture[kGauge]		 = LoadGraph("res/GameScene/ge-ji.png");
 	Texture[kGaugeWhite] = LoadGraph("res/GameScene/ge-ji_ironasi.png");
@@ -351,40 +266,13 @@ PlayScene::PlayScene()
 
 	Texture[kBackGroundYellow] = LoadGraph("res/GameScene/ゲーム画面背景_黄.jpg");
 	Texture[kBackGroundPurple] = LoadGraph("res/GameScene/ゲーム画面背景_紫.jpg");
-	Texture[kBackGroundBlue]   = LoadGraph("res/GameScene/ゲーム画面背景_青.jpg");
+	TextureData::BackGround_BLUE   = LoadGraph("res/haikei.png");
 
 	Texture[kBackGroundResult] = LoadGraph("res/GameScene/リザルト/オプション_集計_勝利画面背景.png");
 
 	Texture[kResultTitle] = LoadGraph("res/GameScene/リザルト/結果発表.png");
 
 	Texture[kReturnTitle] = LoadGraph("res/GameScene/リザルト/勝利画面_タイトルに戻る.png");
-
-	Texture[Description] = LoadGraph("res/ルール説明.png");
-	
-	Texture[Esc] = LoadGraph("res/esc.png");
-	
-	Texture[DescFrame] = LoadGraph("res/説明表示枠.png");
-	Texture[DescLeft] = LoadGraph("res/矢印_左.png");
-	Texture[DescRight] = LoadGraph("res/矢印_右.png");
-	
-	Texture[Desc_Light] = LoadGraph("res/明〇.png");
-	Texture[Desc_Dark] = LoadGraph("res/暗〇.png");
-
-	Texture[Desc_tex1] = LoadGraph("res/説明画面_１.png");
-	Texture[Desc_tex2] = LoadGraph("res/説明画面_2.png");
-	Texture[Desc_tex3] = LoadGraph("res/説明画面_3.png");
-	Texture[Desc_tex4] = LoadGraph("res/説明画面_4.png");
-	Texture[Desc_tex5] = LoadGraph("res/説明画面_５.png");
-	
-	Texture[Desc_txt1] = LoadGraph("res/説明テキスト1.png");
-	Texture[Desc_txt2] = LoadGraph("res/説明テキスト2.png");
-	Texture[Desc_txt3] = LoadGraph("res/説明テキスト3.png");
-	Texture[Desc_txt4] = LoadGraph("res/説明テキスト4.png");
-	Texture[Desc_txt5] = LoadGraph("res/説明テキスト5.png");
-
-
-
-	Texture[Desc_Desc] = LoadGraph("res/テキストボックス.png");
 
 	TextureCutIn[kCutIn_Red]   = LoadGraph("res/GameScene/ターンのカットイン1P.png");
 	TextureCutIn[kCutIn_Blue]  = LoadGraph("res/GameScene/ターンのカットイン2P.png");
@@ -524,6 +412,10 @@ PlayScene::PlayScene()
 	TextureWin[2] = LoadGraph("res/GameScene/リザルト/3Pの勝利.png");
 	TextureWin[3] = LoadGraph("res/GameScene/リザルト/4Pの勝利.png");
 
+	soundManager = SoundManager::GetInstance();
+	soundManager->LoadSceneSound(SceneID_Play);
+
+	PlaySoundMem(soundManager->GetSoundData(SceneID_Play), DX_PLAYTYPE_LOOP, FALSE);
 }
 
 PlayScene::~PlayScene()
@@ -562,31 +454,57 @@ PlayScene::~PlayScene()
 			}
 		}
 	}
+	soundManager->DeleteSceneSound(SceneID_Play);
 }
 
 void PlayScene::Exec()
 {
+	back_posx1 -= scroll_speedx;
+	back_posy1 += scroll_speedy;
+	back_posx2 -= scroll_speedx;
+	back_posy2 += scroll_speedy;
+	back_posx3 -= scroll_speedx;
+	back_posy3 += scroll_speedy;
+	back_posx4 -= scroll_speedx;
+	back_posy4 += scroll_speedy;
+	back_posx5 -= scroll_speedx;
+	back_posy5 += scroll_speedy;
+	back_posx6 -= scroll_speedx;
+	back_posy6 += scroll_speedy;
 
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	TextureBackGround_posX[i] -= 16;
-	//	TextureBackGround_posY[i] += 9;
-	//	if (TextureBackGround_posX[i] == -1280)
-	//	{
-	//		TextureBackGround_posX[i] += 2560;
-	//		TextureBackGround_posY[i] -= 1440;
-	//	}
-	//
-	//	TextureBackGround_posX_2[i] -= 16;
-	//	TextureBackGround_posY_2[i] += 9;
-	//	if (TextureBackGround_posX_2[i] == -1280)
-	//	{
-	//		TextureBackGround_posX_2[i] += 2560;
-	//		TextureBackGround_posY_2[i] -= 1440;
-	//	}
-	//}
+	if (back_posy1 >= 1280)
+	{
+		back_posx1 = 0;
+		back_posy1 = -1280;
+	}
+	if (back_posy2 >= 1280)
+	{
+		back_posx2 = 1280;
+		back_posy2 = -1280;
+	}
+	if (back_posy3 >= 1280)
+	{
+		back_posx3 = 2560;
+		back_posy3 = -1280;
+	}
+	if (back_posy4 >= 1280)
+	{
+		back_posx4 = 0;
+		back_posy4 = -1280;
+	}
+	if (back_posy5 >= 1280)
+	{
+		back_posx5 = 1280;
+		back_posy5 = -1280;
+	}
+	if (back_posy6 >= 1280)
+	{
+		back_posx6 = 2560;
+		back_posy6 = -1280;
+	}
 
 	//デバッグ用
+#ifdef DEBUG
 	if (IsKeyPushed(KEY_INPUT_R))
 	{
 		OwnPieceRed = 0;
@@ -599,11 +517,11 @@ void PlayScene::Exec()
 			skillState[i] = kUsedSkill;
 		}
 
-		result[0] = 19;
+		result[0] = 16;
 		result[1] = 13;
 		result[2] = 10;
-		result[3] = 19;
-		result[4] = 3;
+		result[3] = 20;
+		result[4] = 5;
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -654,19 +572,6 @@ void PlayScene::Exec()
 			}
 		}
 
-		for (int i = 0; i < maxPlayer; i++)
-		{
-			if (i == order[maxPlayer - 1])
-			{
-				continue;
-			}
-
-			if (orderNumber[maxPlayer - 1] == orderNumber[i])
-			{
-				resultDraw = true;
-			}
-		}
-
 		phase = kResultPhase;
 	}
 	if (IsKeyPushed(KEY_INPUT_N))
@@ -695,29 +600,7 @@ void PlayScene::Exec()
 
 		piece[turnNumber].color = kBlank;
 	}
-
-
-	if (IsKeyPushed(KEY_INPUT_ESCAPE))
-	{
-		option ? option = false : option = true;
-		page = 1;
-	}
-
-	if (option)
-	{
-		if (IsKeyPushed(KEY_INPUT_RIGHT))
-		{
-			page++;
-			page %= 5;
-		}
-		else if (IsKeyPushed(KEY_INPUT_LEFT))
-		{
-			page--;
-			page = (page + 5) % 5;
-		}
-
-		return;
-	}
+#endif
 
 	countFrame++;
 
@@ -725,7 +608,7 @@ void PlayScene::Exec()
 	{
 	case kGameStart:
 
-		if (countFrame >120)
+		if (countFrame > 60)
 		{
 			phase = kInitializePhase;
 		}
@@ -742,21 +625,11 @@ void PlayScene::Exec()
 			piece[turnNumber].pos_x = 230.0f + 22.5f;
 			piece[turnNumber].pos_y = 110.0f + 22.5f;
 
-			if (maxPlayer == 2)
-			{
-				piece[turnNumber].pos_y = 360.0f;
-			}
-
 			break;
 		case kBlue:
 
 			piece[turnNumber].pos_x = 1050.0f - 22.5f;
 			piece[turnNumber].pos_y = 110.0f + 22.5f;
-
-			if (maxPlayer == 2)
-			{
-				piece[turnNumber].pos_y = 360.0f;
-			}
 
 			break;
 		case kBlack:
@@ -803,7 +676,8 @@ void PlayScene::Exec()
 		break;
 	case kDecideThetaPhase:
 		
-		//でバック用
+		//デバック用
+#ifdef DEBUG
 		if (IsKeyPushed(KEY_INPUT_A))
 		{
 			switch (turn)
@@ -830,27 +704,29 @@ void PlayScene::Exec()
 			pos_Y_kami = 0;
 			phase = kSkillKaminoitte;
 		}
+#endif
 
 		theta += 2;
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Play_Enter), DX_PLAYTYPE_NORMAL, TRUE);
 			piece[turnNumber].SetTheta(450.0f - theta > 360.0f ? 90.0f - theta : 450.0f - theta);
 			phase = kDecidePowerPhase;
 		}
 
-		if (IsKeyPushed(KEY_INPUT_S) && skillState[turnNumber % maxPlayer] != kUsedSkill)
+		if (IsKeyPushed(KEY_INPUT_S) && skillState[turnNumber % 4] != kUsedSkill)
 		{
-			switch (skillState[turnNumber % maxPlayer])
+			switch (skillState[turnNumber % 4])
 			{
 			case kActiveSkill:
 				
-				skillState[turnNumber % maxPlayer] = kInactiveSkill;
+				skillState[turnNumber % 4] = kInactiveSkill;
 				
 				break;
 			case kInactiveSkill:
 
-				skillState[turnNumber % maxPlayer] = kActiveSkill;
+				skillState[turnNumber % 4] = kActiveSkill;
 				
 				break;
 			}
@@ -891,6 +767,7 @@ void PlayScene::Exec()
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Play_Enter), DX_PLAYTYPE_NORMAL, TRUE);
 			piece[turnNumber].isMoving = true;
 			
 			//仮数値
@@ -898,7 +775,7 @@ void PlayScene::Exec()
 			
 			phase = kReflectPhase;
 
-			if (skillState[turnNumber % maxPlayer] == kActiveSkill)
+			if (skillState[turnNumber % 4] == kActiveSkill)
 			{
 				phase = kSkillCutInPhase;
 
@@ -926,7 +803,7 @@ void PlayScene::Exec()
 
 		break;
 	case kSkillCutInPhase:
-
+		PlaySoundMem(soundManager->GetSoundData(sound::Skill), DX_PLAYTYPE_NORMAL, TRUE);
 		countCutIn++;
 
 		if (countCutIn > 100)
@@ -943,6 +820,7 @@ void PlayScene::Exec()
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Reflection), DX_PLAYTYPE_NORMAL, TRUE);
 			for (int i = 0; i < MaxPiece; i++)
 			{
 				if (i == turnNumber)
@@ -1059,10 +937,10 @@ void PlayScene::Exec()
 		break;
 	case kTurnOverPhase:
 
-		if (piece[turnNumber].pos_x > 837 ||
+		if (piece[turnNumber].pos_x > 873 ||
 			piece[turnNumber].pos_x < 443 ||
-			piece[turnNumber].pos_y > 557 ||
-			piece[turnNumber].pos_y < 163)
+			piece[turnNumber].pos_y > 554 ||
+			piece[turnNumber].pos_y < 160)
 		{
 			phase = kFinishPhase;
 			break;
@@ -1128,7 +1006,7 @@ void PlayScene::Exec()
 			previousMap[i / 8][i % 8] = map[i / 8][i % 8];
 		}
 
-		othello->TurnOverMethod(&posX, &posY, map, turn);
+		othello.TurnOverMethod(&posX, &posY, map, turn);
 		
 		animationCount = 0;
 		phase = kTurnOverAnimationPhase;
@@ -1138,7 +1016,7 @@ void PlayScene::Exec()
 
 		animationCount++;
 
-		if (animationCount > 90)
+		if (animationCount > 180)
 		{
 			for (int Y = 0; Y < col; Y++)
 			{
@@ -1163,7 +1041,7 @@ void PlayScene::Exec()
 			}
 		}
 
-		if (animationCount > 180)
+		if (animationCount > 300)
 		{
 			phase = kFinishPhase;
 		}
@@ -1171,41 +1049,25 @@ void PlayScene::Exec()
 		break;
 	case kFinishPhase:
 
-		if (maxPlayer == 2)
+		switch (turn)
 		{
-			switch (turn)
-			{
-			case kRed:
-				turn = kBlue;
-				break;
-			case kBlue:
-				turn = kRed;
-				break;
-			}
-		}
-		else if (maxPlayer)
-		{
-			switch (turn)
-			{
-			case kRed:
-				turn = kBlue;
-				break;
-			case kBlue:
-				turn = kBlack;
-				break;
-			case kBlack:
-				turn = kWhite;
-				break;
-			case kWhite:
-				turn = kRed;
-				break;
-			}
+		case kRed:
+			turn = kBlue;
+			break;
+		case kBlue:
+			turn = kBlack;
+			break;
+		case kBlack:
+			turn = kWhite;
+			break;
+		case kWhite:
+			turn = kRed;
+			break;
 		}
 
-
-		if (skillState[turnNumber % maxPlayer] == kActiveSkill)
+		if (skillState[turnNumber % 4] == kActiveSkill)
 		{
-			switch (Character[turnNumber % maxPlayer])
+			switch (Character[turnNumber % 4])
 			{
 			case kHANABI:
 				Hanabi = false;
@@ -1214,7 +1076,7 @@ void PlayScene::Exec()
 				Inbijiburu = false;
 				break;
 			}
-			skillState[turnNumber % maxPlayer] = kUsedSkill;
+			skillState[turnNumber % 4] = kUsedSkill;
 		}
 
 		phase = kInitializePhase;
@@ -1236,7 +1098,7 @@ void PlayScene::Exec()
 		{
 			phase = kResultPhase;
 
-			for (int i = 0; i < maxPlayer; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				result[i] = 0;
 				countPiece[i] = 0;
@@ -1288,15 +1150,15 @@ void PlayScene::Exec()
 
 			MaxOrder = 0;
 
-			for (int i = 0; i < maxPlayer; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				orderNumber[i] = countPiece[i];
 				order[i] = i;
 			}
 
-			for (int i = 0; i < maxPlayer; i++)
+			for (int i = 0; i < 4; i++)
 			{
-				for (int j = i + 1; j < maxPlayer; j++)
+				for (int j = i + 1; j < 4; j++)
 				{
 					if (orderNumber[i] > orderNumber[j])
 					{
@@ -1313,19 +1175,6 @@ void PlayScene::Exec()
 			}
 		}
 
-		for (int i = 0; i < maxPlayer; i++)
-		{
-			if (i == order[maxPlayer - 1])
-			{
-				continue;
-			}
-
-			if (orderNumber[maxPlayer - 1] == orderNumber[i])
-			{
-				resultDraw = true;
-			}
-		}
-
 		break;
 	case kResultPhase:
 
@@ -1338,16 +1187,22 @@ void PlayScene::Exec()
 			resultCount++;
 		}
 
-		if (resultFlameCount > 180 && MaxOrder < maxPlayer)
+		if (resultFlameCount > 180 && MaxOrder < 4)
 		{
 			MaxOrder++;
 
 			resultFlameCount = 121;
+			PlaySoundMem(soundManager->GetSoundData(sound::Result), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 
 		break;
 	}
 }
+
+//デバッグ用
+#ifdef FPS
+int debug = 0;
+#endif
 
 void PlayScene::Draw()
 {
@@ -1357,7 +1212,18 @@ void PlayScene::Draw()
 	//	DrawGraph(TextureBackGround_posX_2[i], TextureBackGround_posY_2[i], Texture[kBackGroundBlue], TRUE);
 	//}
 
-	DrawGraph(0, 0, Texture[kBackGroundBlue], TRUE);
+	DrawGraph(back_posx1, back_posy1, TextureData::BackGround_BLUE, false);
+	DrawGraph(back_posx2, back_posy2, TextureData::BackGround_BLUE, false);
+	DrawGraph(back_posx3, back_posy3, TextureData::BackGround_BLUE, false);
+	DrawGraph(back_posx4, back_posy4, TextureData::BackGround_BLUE, false);
+	DrawGraph(back_posx5, back_posy5, TextureData::BackGround_BLUE, false);
+	DrawGraph(back_posx6, back_posy6, TextureData::BackGround_BLUE, false);
+
+//デバッグ用
+#ifdef FPS
+	debug++;
+	printfDx("%d", debug);
+#endif
 
 	switch (stage)
 	{
@@ -1374,21 +1240,25 @@ void PlayScene::Draw()
 
 	DrawGraph(443, 163, Texture[kBoard_Othello], FALSE);
 
-	for (int i = 0; i < maxPlayer; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		DrawGraph(15 + i % 2 * 1085, 184 + i / 2 * 186, TextureIcon[Character[i]], TRUE);
 	}
 
 	DrawGraph(15, 184, Texture[kIcon_1P], TRUE);
 	DrawGraph(1100, 184, Texture[kIcon_2P], TRUE);
-
+	DrawGraph(15, 370, Texture[kIcon_3P], TRUE);
+	DrawGraph(1100, 370, Texture[kIcon_4P], TRUE);
+	
 	DrawGraph(25, 4, Texture[kOwnPiece_1P], TRUE);
 	DrawGraph(1200, 4, Texture[kOwnPiece_2P], TRUE);
+	DrawGraph(25, 625, Texture[kOwnPiece_3P], TRUE);
+	DrawGraph(1200, 625, Texture[kOwnPiece_4P], TRUE);
 
 	if (OwnPieceRed >= 10)
 	{
-		DrawGraph(45, 40, TextureNumberRed[OwnPieceRed % 10], TRUE);
-		DrawGraph(15, 40, TextureNumberRed[OwnPieceRed / 10], TRUE);
+		DrawGraph(45, 40, TextureNumberRed[OwnPieceRed - 10], TRUE);
+		DrawGraph(15, 40, TextureNumberRed[1], TRUE);
 	}
 	else
 	{
@@ -1397,44 +1267,35 @@ void PlayScene::Draw()
 
 	if (OwnPieceBlue >= 10)
 	{
-		DrawGraph(1220, 40, TextureNumberBlue[OwnPieceBlue % 10], TRUE);
-		DrawGraph(1190, 40, TextureNumberBlue[OwnPieceBlue / 10], TRUE);
+		DrawGraph(1220, 40, TextureNumberBlue[OwnPieceBlue - 10], TRUE);
+		DrawGraph(1190, 40, TextureNumberBlue[1], TRUE);
 	}
 	else
 	{
 		DrawGraph(1220, 40, TextureNumberBlue[OwnPieceBlue], TRUE);
 	}
-
-	if (maxPlayer == 4)
+	
+	if (OwnPieceBlack >= 10)
 	{
-		DrawGraph(15, 370, Texture[kIcon_3P], TRUE);
-		DrawGraph(1100, 370, Texture[kIcon_4P], TRUE);
-
-		DrawGraph(25, 625, Texture[kOwnPiece_3P], TRUE);
-		DrawGraph(1200, 625, Texture[kOwnPiece_4P], TRUE);
-
-		if (OwnPieceBlack >= 10)
-		{
-			DrawGraph(45, 661, TextureNumberBlack[OwnPieceBlack % 10], TRUE);
-			DrawGraph(15, 661, TextureNumberBlack[OwnPieceBlack / 10], TRUE);
-		}
-		else
-		{
-			DrawGraph(45, 661, TextureNumberBlack[OwnPieceBlack], TRUE);
-		}
-
-		if (OwnPieceWhite >= 10)
-		{
-			DrawGraph(1220, 661, TextureNumberWhite[OwnPieceWhite % 10], TRUE);
-			DrawGraph(1190, 661, TextureNumberWhite[OwnPieceWhite / 10], TRUE);
-		}
-		else
-		{
-			DrawGraph(1220, 661, TextureNumberWhite[OwnPieceWhite], TRUE);
-		}
+		DrawGraph(45, 661, TextureNumberBlack[OwnPieceBlack - 10], TRUE);
+		DrawGraph(15, 661, TextureNumberBlack[1], TRUE);
+	}
+	else
+	{
+		DrawGraph(45, 661, TextureNumberBlack[OwnPieceBlack], TRUE);
+	}
+	
+	if (OwnPieceWhite >= 10)
+	{
+		DrawGraph(1220, 661, TextureNumberWhite[OwnPieceWhite - 10], TRUE);
+		DrawGraph(1190, 661, TextureNumberWhite[1], TRUE);
+	}
+	else
+	{
+		DrawGraph(1220, 661, TextureNumberWhite[OwnPieceWhite], TRUE);
 	}
 
-	for (int i = 0; i < maxPlayer; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		switch (skillState[i])
 		{
@@ -1495,33 +1356,11 @@ void PlayScene::Draw()
 		break;
 	case kCutInPhase:
 
-		DrawGraph(0, cutIn_y, TextureCutIn[turnNumber % maxPlayer], TRUE);
+		DrawGraph(0, cutIn_y, TextureCutIn[turnNumber % 4], TRUE);
 
 		break;
 	case kDecideThetaPhase:
 		
-		for (int Y = 0; Y < col; Y++)
-		{
-			for (int X = 0; X < row; X++)
-			{
-				switch (previousMap[Y][X])
-				{
-				case kRed:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelRed], TRUE);
-					break;
-				case kBlue:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelBlue], TRUE);
-					break;
-				case kBlack:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelBlack], TRUE);
-					break;
-				case kWhite:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelWhite], TRUE);
-					break;
-				}
-			}
-		}
-
 		DrawRotaGraph2(piece[turnNumber].pos_x,
 			piece[turnNumber].pos_y,
 			22.5f, 282.0f, 1.0f, theta / 180 * M_PI,
@@ -1532,28 +1371,6 @@ void PlayScene::Draw()
 		
 		break;
 	case kDecidePowerPhase:
-
-		for (int Y = 0; Y < col; Y++)
-		{
-			for (int X = 0; X < row; X++)
-			{
-				switch (previousMap[Y][X])
-				{
-				case kRed:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelRed], TRUE);
-					break;
-				case kBlue:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelBlue], TRUE);
-					break;
-				case kBlack:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelBlack], TRUE);
-					break;
-				case kWhite:
-					DrawGraph(443.125f + X * 49.25f, 163.125f + Y * 49.25f, TexturePixel[kPixelWhite], TRUE);
-					break;
-				}
-			}
-		}
 
 		DrawRotaGraph2(piece[turnNumber].pos_x,
 			piece[turnNumber].pos_y,
@@ -1569,7 +1386,7 @@ void PlayScene::Draw()
 		break;
 	case kSkillCutInPhase:
 
-		DrawGraph(cutIn_x, 226.5f, TextureSkillCutIn[Character[turnNumber % maxPlayer]], TRUE);
+		DrawGraph(cutIn_x, 226.5f, TextureSkillCutIn[Character[turnNumber % 4]], TRUE);
 
 		break;
 	case kReflectPhase:
@@ -1613,7 +1430,7 @@ void PlayScene::Draw()
 			{
 				if (posX == X && posY == Y)
 				{
-					if (animationCount < 30)
+					if (animationCount < 120)
 					{
 						continue;
 					}
@@ -1691,7 +1508,7 @@ void PlayScene::Draw()
 
 			DrawGraph(501, 34, Texture[kResultTitle], TRUE);
 
-			for (int i = 0; i < maxPlayer; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				DrawGraph(454, 246 + i * 110, TexturePlayerNumber[i], TRUE);
 
@@ -1752,14 +1569,7 @@ void PlayScene::Draw()
 
 		if (resultFlameCount > 240)
 		{
-			if (resultDraw)
-			{
-
-			}
-			else
-			{
-				DrawGraph(175, 176, TextureWin[order[3]], TRUE);
-			}
+			DrawGraph(175, 176, TextureWin[order[3]], TRUE);
 		}
 
 		if (resultFlameCount > 300)
@@ -1776,76 +1586,56 @@ void PlayScene::Draw()
 	default:
 		break;
 	}
-
-	if (option)
-	{	
-		DrawGraph(0, 0, Texture[kBackGroundResult], TRUE);
-		
-		DrawGraph(1104, 20, Texture[Esc], TRUE);
-
-		DrawGraph(445, 0, Texture[Description], TRUE);
-
-		DrawGraph(215, 124, Texture[DescFrame], TRUE);
-							
-		DrawGraph(597, 546, Texture[Desc_Dark], TRUE);
-		DrawGraph(613, 546, Texture[Desc_Dark], TRUE);
-		DrawGraph(629, 546, Texture[Desc_Dark], TRUE);
-		DrawGraph(645, 546, Texture[Desc_Dark], TRUE);
-		DrawGraph(661, 546, Texture[Desc_Dark], TRUE);
-							
-		DrawGraph(242, 564, Texture[Desc_Desc], TRUE);
-
-		switch (page)
-		{
-		case 0:
-			DrawGraph(215, 124, Texture[Desc_tex1], TRUE);
-			DrawGraph(597, 546, Texture[Desc_Light], TRUE);
-			DrawGraph(240, 560, Texture[Desc_txt1], TRUE);
-								
-			break;				
-		case 1:					
-			DrawGraph(215, 124, Texture[Desc_tex2], TRUE);
-			DrawGraph(613, 546, Texture[Desc_Light], TRUE);
-			DrawGraph(240, 560, Texture[Desc_txt2], TRUE);
-			break;				
-		case 2:					
-			DrawGraph(215, 124, Texture[Desc_tex3], TRUE);
-			DrawGraph(629, 546, Texture[Desc_Light], TRUE);
-			DrawGraph(240, 560, Texture[Desc_txt3], TRUE);
-			break;				
-		case 3:					
-			DrawGraph(215, 124, Texture[Desc_tex4], TRUE);
-			DrawGraph(645, 546, Texture[Desc_Light], TRUE);
-			DrawGraph(240, 560, Texture[Desc_txt4], TRUE);
-			break;				
-		case 4:					
-			DrawGraph(215, 124, Texture[Desc_tex5], TRUE);
-			DrawGraph(661, 546, Texture[Desc_Light], TRUE);
-			DrawGraph(240, 560, Texture[Desc_txt5], TRUE);
-			break;
-		default:
-			break;
-		}
-
-		DrawGraph(111, 232, Texture[DescLeft], TRUE);
-		DrawGraph(1030, 232, Texture[DescRight], TRUE);
-
-
-	}
-
 }
 
 bool PlayScene::IsEnd() const
 {
-	SceneManager::SetNextScene(SceneID_Title);
+	if (FinishedGame)
+	{
+		SceneManager::SetNextScene(SceneID_Title);
 
-	// @@Dummy 遷移確認用の仮処理
+		/*for (int i = 0; i < kTextureMax; i++)
+		{
+			DeleteGraph(Texture[i]);
+			if (i < 10)
+			{
+				DeleteGraph(TextureNumberRed[i]);
+				DeleteGraph(TextureNumberBlue[i]);
+				DeleteGraph(TextureNumberBlack[i]);
+				DeleteGraph(TextureNumberWhite[i]);
+
+				DeleteGraph(TextureResultNumberRed[i]);
+				DeleteGraph(TextureResultNumberBlue[i]);
+				DeleteGraph(TextureResultNumberBlack[i]);
+				DeleteGraph(TextureResultNumberWhite[i]);
+				if (i < 6)
+				{
+					DeleteGraph(TextureSkillIcon[i]);
+					DeleteGraph(TextureSkillCutIn[i]);
+					DeleteGraph(TextureIcon[i]);
+					if (i < 4)
+					{
+						DeleteGraph(TexturePlayerNumber[i]);
+						DeleteGraph(TextureSheets[i]);
+						DeleteGraph(TextureWin[i]);
+						DeleteGraph(TexturePixel[i]);
+						DeleteGraph(TextureCutIn[i]);
+						if (i < 3)
+						{
+							DeleteGraph(TextureReflectEffect[i]);
+						}
+					}
+				}
+			}
+		}*/
+		
+	}
 	return (FinishedGame);
 }
 
 void PlayScene::Skill(Piece piece[], int num)
 {
-	switch (Character[num % maxPlayer])
+	switch (Character[num % 4])
 	{
 	case kHANABI:
 		Hanabi = true;
@@ -1914,62 +1704,5 @@ void PlayScene::HEBII(Piece piece[], int num)
 
 void PlayScene::MAGUNETTO()
 {
-	for (int i = 0; i < MaxPiece; i++)
-	{
-		if (i == magunettoNum)
-		{
-			continue;
-		}
-
-		float distanceX = piece[magunettoNum].pos_x - piece[i].pos_x;
-		float distanceY = (piece[magunettoNum].pos_y - piece[i].pos_y) * -1;
-
-		float distanceCircle = sqrtf(powf(distanceX, 2.0f) + powf(distanceY, 2.0f));
-
-		double atanTheta = atan2(distanceY, distanceX) * 180 / M_PI;
 	
-		if (atanTheta < 0)
-		{
-			atanTheta += 360.0f;
-		}
-		
-		if (distanceCircle < 70.0f + piece[i].kRadius)
-		{
-			piece[i].pos_x += cos(atanTheta * 180 / M_PI);
-			piece[i].pos_y += sin(atanTheta * 180 / M_PI);
-
-			for (int j = 0; j < MaxPiece; j++)
-			{
-				if (i == j)
-				{
-					continue;
-				}
-
-				if (Collision::collid(piece[i], piece[j]))
-				{
-					float distanceX_ = piece[i].pos_x - piece[j].pos_x;
-					float distanceY_ = (piece[i].pos_y - piece[j].pos_y) * -1;
-
-					float distanceCircle_ = sqrtf(powf(distanceX, 2.0f) + powf(distanceY, 2.0f));
-
-					double atanTheta_ = atan2(distanceY, distanceX) * 180 / M_PI;
-
-					if (atanTheta_ < 0)
-					{
-						atanTheta_ += 360.0f;
-					}
-
-					piece[i].pos_x -= cosf(atanTheta_ * M_PI / 180) * (piece[j].kRadius + piece[i].kRadius - distanceCircle + 0.1f);
-					piece[i].pos_y += sinf(atanTheta_ * M_PI / 180) * (piece[j].kRadius + piece[i].kRadius - distanceCircle + 0.1f);
-				}
-			}
-		}
-
-		//double tmpTheta = (atanTheta + 180.0f > 360.0f ? atanTheta - 180.0f : atanTheta + 180.0f);
-		//piece[i].SetTheta(tmpTheta);
-		//piece[i].SetV(piece[i].GetV() + (piece[num].GetV() * (1 - piece[num].e)));
-		//piece[num].SetTheta(fmodf(360.0f - piece[num].GetTheta() + atanTheta * 2, 360.0f));
-
-
-	}
 }

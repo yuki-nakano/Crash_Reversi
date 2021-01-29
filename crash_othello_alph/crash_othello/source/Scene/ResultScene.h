@@ -1,13 +1,13 @@
-﻿#ifndef OPTIONSCENE_H
-#define OPTIONSCENE_H
+﻿#ifndef RESULTSCENE_H
+#define RESULTSCENE_H
 
 #include "../common.h"
 
-class OptionScene : public SceneBase
+class ResultScene : public SceneBase
 {
 public:
-	OptionScene();
-	~OptionScene();
+	ResultScene();
+	~ResultScene();
 public:
 	void Exec();
 	void Draw();
@@ -15,4 +15,4 @@ public:
 	virtual bool IsEnd() const; //シーンが終了したかどうかを返す
 };
 
-#endif // !OPTIONSCENE_H
+#endif // !RESULTSCENE_H

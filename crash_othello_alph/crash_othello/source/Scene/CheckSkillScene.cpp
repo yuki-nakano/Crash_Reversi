@@ -1,14 +1,14 @@
 ﻿#include "../common.h"
 
-OptionScene::OptionScene()
+CheckSkillScene::CheckSkillScene()
 {
 
 }
-OptionScene::~OptionScene()
+CheckSkillScene::~CheckSkillScene()
 {
 
 }
-void OptionScene::Exec()
+void CheckSkillScene::Exec()
 {
 	m_Step++;
 	if (m_Step >= 120)
@@ -17,13 +17,13 @@ void OptionScene::Exec()
 	}
 }
 
-void OptionScene::Draw()
+void CheckSkillScene::Draw()
 {
 	//画面左上にデバッグ用の文字を黒で表示する
-	DrawString(20, 20, "OptionScene", GetColor(0, 0, 0));
+	DrawString(20, 20, "CheckSkillScene", GetColor(0, 0, 0));
 }
 
-bool OptionScene::IsEnd() const
+bool CheckSkillScene::IsEnd() const
 {
 	// @@Dummy 遷移確認用の仮処理
 	return (m_Step >= 120);

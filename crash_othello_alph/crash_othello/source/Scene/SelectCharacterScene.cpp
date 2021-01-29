@@ -25,15 +25,36 @@ SelectCharacterScene::SelectCharacterScene()
 {
 	SelectPlayer = 1;
 	SceneBase::Choice_Min = 1;
-	SceneBase::Choice_Max = 6;
+	SceneBase::Choice_Max = 4;
 	SceneBase::Choice = Choice_Min;
+
+	Player::Character1 = 0;
+	Player::Character2 = 0;
+	Player::Character3 = 0;
+	Player::Character4 = 0;
 
 	set1 = 0;
 	set2 = 0;
 	set3 = 0;
 	set4 = 0;
 
-	TextureData::BackGround_BLUE	= LoadGraph("res/haikei_blue.png");
+	SceneBase::back_posx1 = -1280;
+	SceneBase::back_posy1 = 0;
+	SceneBase::back_posx2 = 0;
+	SceneBase::back_posy2 = 0;
+	SceneBase::back_posx3 = 1280;
+	SceneBase::back_posy3 = 0;
+	SceneBase::back_posx4 = 0;
+	SceneBase::back_posy4 = -1280;
+	SceneBase::back_posx5 = 1280;
+	SceneBase::back_posy5 = -1280;
+	SceneBase::back_posx6 = 2560;
+	SceneBase::back_posy6 = -1280;
+
+	SceneBase::scroll_speedx = 2;
+	SceneBase::scroll_speedy = 2;
+
+	TextureData::BackGround_BLUE	= LoadGraph("res/haikei.png");
 
 	TextureData::Enter = LoadGraph("res/enter.png");
 	TextureData::Esc = LoadGraph("res/esc.png");
@@ -66,6 +87,10 @@ SelectCharacterScene::SelectCharacterScene()
 	TextureData::Skill_Desc5		= LoadGraph("res/スキル説明_ヘビーショット.png");
 	TextureData::Skill_Desc6		= LoadGraph("res/スキル説明_マグネット.png");
 	TextureData::Icon				= LoadGraph("res/キャラクター一覧.png");
+	TextureData::Icon1				= LoadGraph("res/アイコン_花火.png");
+	TextureData::Icon2				= LoadGraph("res/アイコン_力こそパワー.png");
+	TextureData::Icon3				= LoadGraph("res/アイコン_インビジブルショット.png");
+	TextureData::Icon4				= LoadGraph("res/アイコン_神の一手.png");
 
 	TextureData::Cursor1_1			= LoadGraph("res/キャラ選択中枠1ｐ_1.png");
 	TextureData::Cursor1_2			= LoadGraph("res/キャラ選択中枠1ｐ_2.png");
@@ -92,27 +117,17 @@ SelectCharacterScene::SelectCharacterScene()
 	TextureData::SetCursor3			= LoadGraph("res/キャラ確定枠３ｐ.png");
 	TextureData::SetCursor4			= LoadGraph("res/キャラ確定枠４ｐ.png");
 
+	soundManager = SoundManager::GetInstance();
+	//soundManager->LoadSceneSound(SceneID_SelectCharacter);
 
-	SceneBase::back_posx1 = 0.0f;
-	SceneBase::back_posy1 = 0.0f;
-	SceneBase::back_posx2 = 0.0f;
-	SceneBase::back_posy2 = -720.0f;
-	SceneBase::back_posx3 = 1280.0f;
-	SceneBase::back_posy3 = -720.0f;
-	SceneBase::back_posx4 = 1280.0f;
-	SceneBase::back_posy4 = -1440.0f;
-	SceneBase::back_posx5 = 0.0f;
-	SceneBase::back_posy5 = 720.0f;
-	SceneBase::back_posx6 = 1280.0f;
-	SceneBase::back_posy6 = 0.0f;
-
-	SceneBase::scroll_speedx = 8.0f;
-	SceneBase::scroll_speedy = 4.5f;
+	StopSoundMem(soundManager->GetSoundData(sound::title));
+	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 }
 
 SelectCharacterScene::~SelectCharacterScene()
 {	
-
+	TextureData::DeleteTex();
+	soundManager->DeleteSceneSound(SceneID_Title);
 }	
 
 void SelectCharacterScene::Exec()
@@ -130,41 +145,42 @@ void SelectCharacterScene::Exec()
 	back_posx6 -= scroll_speedx;
 	back_posy6 += scroll_speedy;
 
-	if (back_posx1 <= -1280)
+	if (back_posy1 >= 1280)
 	{
-		back_posx1 = 1280;
-		back_posy1 = -720;
+		back_posx1 = 0;
+		back_posy1 = -1280;
 	}
-	if (back_posx3 <= -1280)
-	{
-		back_posx3 = 1280;
-		back_posy3 = -720;
-	}
-	if (back_posx2 <= -1280)
+	if (back_posy2 >= 1280)
 	{
 		back_posx2 = 1280;
-		back_posy2 = -1440;
+		back_posy2 = -1280;
 	}
-	if (back_posx4 <= -1280)
+	if (back_posy3 >= 1280)
 	{
-		back_posx4 = 1280;
-		back_posy4 = -1440;
+		back_posx3 = 2560;
+		back_posy3 = -1280;
 	}
-	if (back_posx5 <= -1280)
+	if (back_posy4 >= 1280)
+	{
+		back_posx4 = 0;
+		back_posy4 = -1280;
+	}
+	if (back_posy5 >= 1280)
 	{
 		back_posx5 = 1280;
-		back_posy5 = 0;
+		back_posy5 = -1280;
 	}
-	if (back_posx6 <= -1280)
+	if (back_posy6 >= 1280)
 	{
-		back_posx6 = 1280;
-		back_posy6 = 0;
+		back_posx6 = 2560;
+		back_posy6 = -1280;
 	}
 
-	if (IsKeyPushed(KEY_INPUT_ESCAPE))
+	/*if (IsKeyPushed(KEY_INPUT_ESCAPE))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
-	}
+	}*/
 
 	m_timer++;
 	if (m_timer >= 80)
@@ -250,6 +266,7 @@ void SelectCharacterScene::Exec()
 	//キャラクター変更用
 	if (IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::Enter), DX_PLAYTYPE_NORMAL, TRUE);
 		switch (Choice)
 		{
 		case 1:
@@ -276,13 +293,13 @@ void SelectCharacterScene::Exec()
 		switch (SelectPlayer)
 		{
 		case 1:
-			P1.Character = NowChoise;
+			Player::Character1 = NowChoise;
 			SelectPlayer ++;
 			break;
 		case 2:
-			if (P1.Character != NowChoise)
+			if (Player::Character1 != NowChoise)
 			{
-				P2.Character = NowChoise;
+				Player::Character2 = NowChoise;
 				if (SceneBase::People_Max == 2)
 				{
 					SceneManager::SetNextScene(SceneID_Play);
@@ -295,16 +312,16 @@ void SelectCharacterScene::Exec()
 			}
 			break;
 		case 3:
-			if (P1.Character != NowChoise && P2.Character != NowChoise)
+			if (Player::Character1 != NowChoise && Player::Character2 != NowChoise)
 			{
-				P3.Character = NowChoise;
+				Player::Character3 = NowChoise;
 				SelectPlayer++;
 			}
 			break;
 		case 4:
-			if (P1.Character != NowChoise && P2.Character != NowChoise && P3.Character != NowChoise)
+			if (Player::Character1 != NowChoise && Player::Character2 != NowChoise && Player::Character3 != NowChoise)
 			{
-				P4.Character = NowChoise;
+				Player::Character4 = NowChoise;
 				SceneManager::SetNextScene(SceneID_Play);
 				SelectPlayer++;
 			}
@@ -325,10 +342,14 @@ void SelectCharacterScene::Draw()
 	DrawGraph(back_posx6, back_posy6, TextureData::BackGround_BLUE, false);
 
 	DrawGraph(20, 20, TextureData::Enter, true);
-	DrawGraph(1104, 20, TextureData::Esc, true);
+	//DrawGraph(1104, 20, TextureData::Esc, true);
 
 	DrawGraph(340, 0, TextureData::CharacterSelect, true);
-	DrawGraph(475, 160, TextureData::Icon, true);
+	//DrawGraph(475, 160, TextureData::Icon, true);
+	DrawGraph(475, 160, TextureData::Icon1, true);
+	DrawGraph(638, 160, TextureData::Icon2, true);
+	DrawGraph(475, 323, TextureData::Icon3, true);
+	DrawGraph(638, 323, TextureData::Icon4, true);
 
 	DrawGraph(20, 100, TextureData::CharacterFlame, true);
 	DrawGraph(860, 100, TextureData::CharacterFlame, true);
@@ -343,7 +364,7 @@ void SelectCharacterScene::Draw()
 
 	if (IsKeyPushed(KEY_INPUT_RETURN))
 	{
-		switch (P1.Character)
+		switch (Player::Character1)
 		{
 		case 1:
 			set1 = 1;
@@ -366,7 +387,7 @@ void SelectCharacterScene::Draw()
 		default:
 			break;
 		}
-		switch (P2.Character)
+		switch (Player::Character2)
 		{
 		case 1:
 			set2 = 1;
@@ -389,7 +410,7 @@ void SelectCharacterScene::Draw()
 		default:
 			break;
 		}
-		switch (P3.Character)
+		switch (Player::Character3)
 		{
 		case 1:
 			set3 = 1;
@@ -412,7 +433,7 @@ void SelectCharacterScene::Draw()
 		default:
 			break;
 		}
-		switch (P4.Character)
+		switch (Player::Character4)
 		{
 		case 1:
 			set4 = 1;
@@ -798,9 +819,5 @@ void SelectCharacterScene::Draw()
 
 bool SelectCharacterScene::IsEnd() const
 {
-	if((IsKeyPushed(KEY_INPUT_RETURN) && SelectPlayer == 5) || (SceneBase::People_Max == 2 && SelectPlayer == 3) ||(IsKeyPushed(KEY_INPUT_ESCAPE)))
-	{
-		TextureData::DeleteTex();
-		return true;
-	}
+		return ((IsKeyPushed(KEY_INPUT_RETURN) && SelectPlayer == 5) || (SceneBase::People_Max == 2 && SelectPlayer == 3) || (IsKeyPushed(KEY_INPUT_ESCAPE)));
 }

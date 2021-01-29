@@ -1,6 +1,8 @@
 ﻿#include "common.h"
-#include "othello.h"
-#include "GameManager.h"
+#include "main.h"
+
+void GameProcessing();
+void DrawProcessing();
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -10,9 +12,10 @@ int WINAPI WinMain(
 {
 	SetOutApplicationLogValidFlag(false);
 	ChangeWindowMode(true);
-	SetGraphMode(Widht, Height, 16);
+	SetGraphMode(definition.Widht, definition.Height, 16);
 	SetBackgroundColor(255, 255, 255);
 	SetMainWindowText("CrashOthello");
+
 
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
@@ -23,10 +26,8 @@ int WINAPI WinMain(
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	//管理クラスの作成
-	Othello::CreateInstance();
-	GameManager::CreateInstance();
+	SoundManager::CreateInstance();
 	SceneManager* pSceneMng = new SceneManager();
-	
 
 	while (true)
 	{
@@ -41,6 +42,9 @@ int WINAPI WinMain(
 		{
 			//フレームごとにキーの状態更新
 			UpdateKeyStatus();
+
+			//ゲーム処理
+			//GameProcessing();
 			
 			ClearDrawScreen();
 			clsDx();
@@ -51,15 +55,25 @@ int WINAPI WinMain(
 			//シーン描画
 			pSceneMng->Draw();
 
+			//描画処理
+			//DrawProcessing();
 			ScreenFlip();
 		}
 	}
 
-	Othello::DeleteInstance();
-	GameManager::DeleteInstance();
 	delete pSceneMng;
 	pSceneMng = nullptr;
 
 	DxLib_End();	// ＤＸライブラリ使用の終了処理
 	return 0;		// ソフトの終了 
+}
+
+void  GameProcessing()
+{
+
+}
+
+void DrawProcessing()
+{
+
 }

@@ -27,12 +27,12 @@ public:
 	static int Desc_tex3;
 	static int Desc_tex4;
 	static int Desc_tex5;
-	static int Desc_txt1;
-	static int Desc_txt2;
-	static int Desc_txt3;
-	static int Desc_txt4;
-	static int Desc_txt5;
 	static int Desc_Desc;
+	static int Desc_Text1;
+	static int Desc_Text2;
+	static int Desc_Text3;
+	static int Desc_Text4;
+	static int Desc_Text5;
 	static int NumberOfPeople;
 	static int CharacterSelect;
 	static int Character1;
@@ -59,6 +59,10 @@ public:
 	static int Skill_Desc5;
 	static int Skill_Desc6;
 	static int Icon;
+	static int Icon1;
+	static int Icon2;
+	static int Icon3;
+	static int Icon4;
 	static int SetCursor1;
 	static int SetCursor2;
 	static int SetCursor3;

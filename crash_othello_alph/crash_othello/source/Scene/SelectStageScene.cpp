@@ -9,7 +9,25 @@ SelectStageScene::SelectStageScene()
 	SceneBase::Choice_Max = 3;
 	SceneBase::Choice = 0;
 
-	TextureData::BackGround_BLUE = LoadGraph("res/setumeihaikei.png");
+	SceneBase::Stage = 0;
+
+	SceneBase::back_posx1 = -1280;
+	SceneBase::back_posy1 = 0;
+	SceneBase::back_posx2 = 0;
+	SceneBase::back_posy2 = 0;
+	SceneBase::back_posx3 = 1280;
+	SceneBase::back_posy3 = 0;
+	SceneBase::back_posx4 = 0;
+	SceneBase::back_posy4 = -1280;
+	SceneBase::back_posx5 = 1280;
+	SceneBase::back_posy5 = -1280;
+	SceneBase::back_posx6 = 2560;
+	SceneBase::back_posy6 = -1280;
+
+	SceneBase::scroll_speedx = 2;
+	SceneBase::scroll_speedy = 2;
+
+	TextureData::BackGround_BLUE = LoadGraph("res/haikei.png");
 
 	TextureData::Enter = LoadGraph("res/enter.png");
 	TextureData::Esc = LoadGraph("res/esc.png");
@@ -23,28 +41,11 @@ SelectStageScene::SelectStageScene()
 	TextureData::StageConfirm1 = LoadGraph("res/ノーマルステージ確定.png");
 	TextureData::StageConfirm2 = LoadGraph("res/クロスステージ確定.png");
 	TextureData::StageConfirm3 = LoadGraph("res/ボウリングステージ確定.png");
-
-
-	SceneBase::back_posx1 = 0.0f;
-	SceneBase::back_posy1 = 0.0f;
-	SceneBase::back_posx2 = 0.0f;
-	SceneBase::back_posy2 = -720.0f;
-	SceneBase::back_posx3 = 1280.0f;
-	SceneBase::back_posy3 = -720.0f;
-	SceneBase::back_posx4 = 1280.0f;
-	SceneBase::back_posy4 = -1440.0f;
-	SceneBase::back_posx5 = 0.0f;
-	SceneBase::back_posy5 = 720.0f;
-	SceneBase::back_posx6 = 1280.0f;
-	SceneBase::back_posy6 = 0.0f;
-
-	SceneBase::scroll_speedx = 8.0f;
-	SceneBase::scroll_speedy = 4.5f;
 }
 
 SelectStageScene::~SelectStageScene()
 {
-
+	TextureData::DeleteTex();
 }
 
 void SelectStageScene::Exec()
@@ -62,35 +63,35 @@ void SelectStageScene::Exec()
 	back_posx6 -= scroll_speedx;
 	back_posy6 += scroll_speedy;
 
-	if (back_posx1 <= -1280)
+	if (back_posy1 >= 1280)
 	{
-		back_posx1 = 1280;
-		back_posy1 = -720;
+		back_posx1 = 0;
+		back_posy1 = -1280;
 	}
-	if (back_posx3 <= -1280)
-	{
-		back_posx3 = 1280;
-		back_posy3 = -720;
-	}
-	if (back_posx2 <= -1280)
+	if (back_posy2 >= 1280)
 	{
 		back_posx2 = 1280;
-		back_posy2 = -1440;
+		back_posy2 = -1280;
 	}
-	if (back_posx4 <= -1280)
+	if (back_posy3 >= 1280)
 	{
-		back_posx4 = 1280;
-		back_posy4 = -1440;
+		back_posx3 = 2560;
+		back_posy3 = -1280;
 	}
-	if (back_posx5 <= -1280)
+	if (back_posy4 >= 1280)
+	{
+		back_posx4 = 0;
+		back_posy4 = -1280;
+	}
+	if (back_posy5 >= 1280)
 	{
 		back_posx5 = 1280;
-		back_posy5 = 0;
+		back_posy5 = -1280;
 	}
-	if (back_posx6 <= -1280)
+	if (back_posy6 >= 1280)
 	{
-		back_posx6 = 1280;
-		back_posy6 = 0;
+		back_posx6 = 2560;
+		back_posy6 = -1280;
 	}
 
 	//Timer_Start++;
@@ -187,18 +188,5 @@ void SelectStageScene::Draw()
 
 bool SelectStageScene::IsEnd() const
 {
-	/*if (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0 && SelectConfirm == false)
-	{
-		Timer_Start = 0;
-		SelectConfirm = true;
-	}
-	if (SelectConfirm == true && Timer_Start >= 120)
-	{
-		return true;
-	}*/
-	if (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0)
-	{
-		TextureData::DeleteTex();
-		return true;
-	}
+		return (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0);
 }

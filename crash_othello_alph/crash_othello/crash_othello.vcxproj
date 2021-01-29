@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\GameManager.cpp" />
     <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\DrawTexture.cpp" />
     <ClCompile Include="source\fade.cpp" />
@@ -28,9 +27,13 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\othello.cpp" />
     <ClCompile Include="source\SceneManager.cpp" />
+    <ClCompile Include="source\Scene\BackToTitleScene.cpp" />
+    <ClCompile Include="source\Scene\CheckSkillScene.cpp" />
     <ClCompile Include="source\Scene\DescriptionScene.cpp" />
     <ClCompile Include="source\Scene\OptionScene.cpp" />
+    <ClCompile Include="source\Scene\OutComeScene.cpp" />
     <ClCompile Include="source\Scene\PlayScene.cpp" />
+    <ClCompile Include="source\Scene\ResultScene.cpp" />
     <ClCompile Include="source\Scene\SceneBase.cpp" />
     <ClCompile Include="source\Scene\SelectCharacterScene.cpp" />
     <ClCompile Include="source\Scene\SelectNumberOfPeople.cpp" />
@@ -41,17 +44,21 @@
   <ItemGroup>
     <ClInclude Include="source\Collision.h" />
     <ClInclude Include="source\Definition.h" />
-    <ClInclude Include="source\GameManager.h" />
     <ClInclude Include="source\Piece.h" />
     <ClInclude Include="source\common.h" />
     <ClInclude Include="source\Input.h" />
     <ClInclude Include="source\DrawTexture.h" />
     <ClInclude Include="source\fade.h" />
+    <ClInclude Include="source\main.h" />
     <ClInclude Include="source\othello.h" />
     <ClInclude Include="source\SceneManager.h" />
+    <ClInclude Include="source\Scene\BackToTitleScene.h" />
+    <ClInclude Include="source\Scene\CheckSkillScene.h" />
     <ClInclude Include="source\Scene\DescriptionScene.h" />
     <ClInclude Include="source\Scene\OptionScene.h" />
+    <ClInclude Include="source\Scene\OutComeScene.h" />
     <ClInclude Include="source\Scene\PlayScene.h" />
+    <ClInclude Include="source\Scene\ResultScene.h" />
     <ClInclude Include="source\Scene\SceneBase.h" />
     <ClInclude Include="source\Scene\SelectCharacterScene.h" />
     <ClInclude Include="source\Scene\SelectNumberOfPeople.h" />
@@ -148,6 +155,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(DxLib)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>MinSpace</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -182,6 +190,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(DxLib)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>MinSpace</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
