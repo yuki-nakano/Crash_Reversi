@@ -59,10 +59,6 @@ public:
 	static int Skill_Desc5;
 	static int Skill_Desc6;
 	static int Icon;
-	static int Icon1;
-	static int Icon2;
-	static int Icon3;
-	static int Icon4;
 	static int SetCursor1;
 	static int SetCursor2;
 	static int SetCursor3;

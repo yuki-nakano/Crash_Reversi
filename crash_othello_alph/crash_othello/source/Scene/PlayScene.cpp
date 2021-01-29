@@ -75,7 +75,7 @@ enum
 
 	kReturnTitle,
 
-	Description,
+	kDescription,
 	Esc,
 
 	DescFrame,
@@ -171,6 +171,7 @@ int TextureWin[4];
 
 PlayScene::PlayScene()
 {
+	
 	SceneManager::SetNextScene(SceneID_Title);
 	gameManager = GameManager::GetInstance();
 	othello = Othello::GetInstance();
@@ -359,7 +360,7 @@ PlayScene::PlayScene()
 
 	Texture[kReturnTitle] = LoadGraph("res/GameScene/リザルト/勝利画面_タイトルに戻る.png");
 
-	Texture[Description] = LoadGraph("res/ルール説明.png");
+	Texture[kDescription] = LoadGraph("res/ルール説明.png");
 	
 	Texture[Esc] = LoadGraph("res/esc.png");
 	
@@ -524,6 +525,10 @@ PlayScene::PlayScene()
 	TextureWin[2] = LoadGraph("res/GameScene/リザルト/3Pの勝利.png");
 	TextureWin[3] = LoadGraph("res/GameScene/リザルト/4Pの勝利.png");
 
+	soundManager = SoundManager::GetInstance();
+	soundManager->LoadSceneSound(SceneID_Play);
+
+	PlaySoundMem(soundManager->GetSoundData(SceneID_Play), DX_PLAYTYPE_LOOP, FALSE);
 }
 
 PlayScene::~PlayScene()
@@ -562,6 +567,7 @@ PlayScene::~PlayScene()
 			}
 		}
 	}
+	soundManager->DeleteSceneSound(SceneID_Play);
 }
 
 void PlayScene::Exec()
@@ -835,6 +841,7 @@ void PlayScene::Exec()
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Play_Enter), DX_PLAYTYPE_NORMAL, TRUE);
 			piece[turnNumber].SetTheta(450.0f - theta > 360.0f ? 90.0f - theta : 450.0f - theta);
 			phase = kDecidePowerPhase;
 		}
@@ -891,6 +898,7 @@ void PlayScene::Exec()
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Play_Enter), DX_PLAYTYPE_NORMAL, TRUE);
 			piece[turnNumber].isMoving = true;
 			
 			//仮数値
@@ -926,6 +934,7 @@ void PlayScene::Exec()
 
 		break;
 	case kSkillCutInPhase:
+		PlaySoundMem(soundManager->GetSoundData(sound::Skill), DX_PLAYTYPE_NORMAL, TRUE);
 
 		countCutIn++;
 
@@ -943,6 +952,7 @@ void PlayScene::Exec()
 
 		if (IsKeyPushed(KEY_INPUT_SPACE))
 		{
+			PlaySoundMem(soundManager->GetSoundData(sound::Reflection), DX_PLAYTYPE_NORMAL, TRUE);
 			for (int i = 0; i < MaxPiece; i++)
 			{
 				if (i == turnNumber)
@@ -1343,6 +1353,7 @@ void PlayScene::Exec()
 			MaxOrder++;
 
 			resultFlameCount = 121;
+			PlaySoundMem(soundManager->GetSoundData(sound::Result), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 
 		break;
@@ -1783,7 +1794,7 @@ void PlayScene::Draw()
 		
 		DrawGraph(1104, 20, Texture[Esc], TRUE);
 
-		DrawGraph(445, 0, Texture[Description], TRUE);
+		DrawGraph(445, 0, Texture[kDescription], TRUE);
 
 		DrawGraph(215, 124, Texture[DescFrame], TRUE);
 							

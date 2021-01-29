@@ -37,27 +37,17 @@ DescriptionScene::DescriptionScene()
 
 	TextureData::Character1 = LoadGraph("res/インビジブルショット立ち絵.png");
 
+	soundManager = SoundManager::GetInstance();
+	//soundManager->LoadSceneSound(SceneID_Description);
 
-	SceneBase::back_posx1 = 0.0f;
-	SceneBase::back_posy1 = 0.0f;
-	SceneBase::back_posx2 = 0.0f;
-	SceneBase::back_posy2 = -720.0f;
-	SceneBase::back_posx3 = 1280.0f;
-	SceneBase::back_posy3 = -720.0f;
-	SceneBase::back_posx4 = 1280.0f;
-	SceneBase::back_posy4 = -1440.0f;
-	SceneBase::back_posx5 = 0.0f;
-	SceneBase::back_posy5 = 720.0f;
-	SceneBase::back_posx6 = 1280.0f;
-	SceneBase::back_posy6 = 0.0f;
-
-	SceneBase::scroll_speedx = 8.0f;
-	SceneBase::scroll_speedy = 4.5f; 
+	StopSoundMem(soundManager->GetSoundData(sound::title));
+	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 }
 
 DescriptionScene::~DescriptionScene()
 {
-
+	TextureData::DeleteTex();
+	//soundManager->DeleteSceneSound(SceneID_Description);
 }
 
 void DescriptionScene::Exec()
@@ -111,10 +101,12 @@ void DescriptionScene::Exec()
 		if (Choice == 5)
 		{
 			Choice = 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice < Choice_Max)
 		{
 			Choice += 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
 	else if (IsKeyPushed(KEY_INPUT_LEFT))
@@ -122,10 +114,12 @@ void DescriptionScene::Exec()
 		if (Choice > Choice_Min)
 		{
 			Choice -= 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice == 1)
 		{
 			Choice = 5;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
 
@@ -135,6 +129,7 @@ void DescriptionScene::Exec()
 	//}
 	else if (IsKeyPushed(KEY_INPUT_ESCAPE))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_Title);
 	}
 }

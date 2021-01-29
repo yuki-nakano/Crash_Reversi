@@ -25,9 +25,6 @@
     <ClCompile Include="source\DrawTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="source\Scene\DescriptionScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -82,9 +79,6 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\DrawTexture.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="source\fade.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene\DescriptionScene.h">

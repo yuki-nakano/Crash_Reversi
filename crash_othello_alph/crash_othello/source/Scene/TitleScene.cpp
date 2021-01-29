@@ -29,9 +29,6 @@ TitleScene::TitleScene()
 	SceneBase::scroll_speedx = 8.0f;
 	SceneBase::scroll_speedy = 4.5f;
 
-	//音声の読み込み(変数名は仮置き)
-	SoundData::A = LoadSoundMem("res/Sound/START!!.mp3"/*"res/Sound/retroparty.mp3"*/);
-	ChangeVolumeSoundMem(255 * SceneBase::VolumePer / 100, SoundData::A);
 
 	//画像の読み込み
 	TextureData::Title = LoadGraph("res/タイトルロゴ2.png");
@@ -40,18 +37,20 @@ TitleScene::TitleScene()
 	TextureData::Button_Rule = LoadGraph("res/タイトルボタン_ルール.png");
 
 	SceneBase::Choice = 0;
+
+	soundManager = SoundManager::GetInstance();
+	soundManager->LoadSceneSound(SceneID_Title);
+
+	StopSoundMem(soundManager->GetSoundData(sound::title));
+	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 }
 TitleScene::~TitleScene()
 {
-	
+		TextureData::DeleteTex();
+	//soundManager->DeleteSceneSound(SceneID_Title);
 }
 void TitleScene::Exec()
 {
-	if (CheckSoundMem(SoundData::A) != 1 && DrawGraph(back_posx4, back_posy4, TextureData::BackGround_BLUE, false) == 0)
-	{
-		PlaySoundMem(SoundData::A, DX_PLAYTYPE_LOOP, true);
-	}
-
 	back_posx1 -= scroll_speedx;
 	back_posy1 += scroll_speedy;
 	back_posx2 -= scroll_speedx;
@@ -111,10 +110,12 @@ void TitleScene::Exec()
 		if (Choice == 0)
 		{
 			Choice = 2;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice < Choice_Max)
 		{
 			Choice += 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
 	else if (IsKeyPushed(KEY_INPUT_LEFT))
@@ -122,19 +123,23 @@ void TitleScene::Exec()
 		if (Choice > Choice_Min)
 		{
 			Choice -= 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 		else if (Choice == 0)
 		{
 			Choice = 1;
+			PlaySoundMem(soundManager->GetSoundData(sound::Cursor), DX_PLAYTYPE_NORMAL, TRUE);
 		}
 	}
 
 	if (Choice == 1 && IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
 	}
 	else if (Choice == 2 && IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_Description);
 	}
 }
@@ -173,8 +178,6 @@ bool TitleScene::IsEnd() const
 {
 	if (IsKeyPushed(KEY_INPUT_RETURN) && Choice != 0)
 	{
-		StopSoundMem(SoundData::A);
-		DeleteSoundMem(SoundData::A);
 		TextureData::DeleteTex();
 		return true;
 	}

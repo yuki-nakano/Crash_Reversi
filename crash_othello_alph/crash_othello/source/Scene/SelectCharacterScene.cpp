@@ -25,7 +25,8 @@ SelectCharacterScene::SelectCharacterScene()
 {
 	SelectPlayer = 1;
 	SceneBase::Choice_Min = 1;
-	SceneBase::Choice_Max = 6;
+	//SceneBase::Choice_Max = 6;
+	SceneBase::Choice_Max = 4;
 	SceneBase::Choice = Choice_Min;
 
 	set1 = 0;
@@ -66,6 +67,10 @@ SelectCharacterScene::SelectCharacterScene()
 	TextureData::Skill_Desc5		= LoadGraph("res/スキル説明_ヘビーショット.png");
 	TextureData::Skill_Desc6		= LoadGraph("res/スキル説明_マグネット.png");
 	TextureData::Icon				= LoadGraph("res/キャラクター一覧.png");
+	TextureData::Icon1				= LoadGraph("res/アイコン_花火.png");
+	TextureData::Icon2				= LoadGraph("res/アイコン_力こそパワー.png");
+	TextureData::Icon3				= LoadGraph("res/アイコン_インビジブルショット.png");
+	TextureData::Icon4				= LoadGraph("res/アイコン_神の一手.png");
 
 	TextureData::Cursor1_1			= LoadGraph("res/キャラ選択中枠1ｐ_1.png");
 	TextureData::Cursor1_2			= LoadGraph("res/キャラ選択中枠1ｐ_2.png");
@@ -92,6 +97,10 @@ SelectCharacterScene::SelectCharacterScene()
 	TextureData::SetCursor3			= LoadGraph("res/キャラ確定枠３ｐ.png");
 	TextureData::SetCursor4			= LoadGraph("res/キャラ確定枠４ｐ.png");
 
+	soundManager = SoundManager::GetInstance();
+	//soundManager->LoadSceneSound(SceneID_SelectCharacter);
+	StopSoundMem(soundManager->GetSoundData(sound::title));
+	PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_LOOP, FALSE);
 
 	SceneBase::back_posx1 = 0.0f;
 	SceneBase::back_posy1 = 0.0f;
@@ -112,7 +121,8 @@ SelectCharacterScene::SelectCharacterScene()
 
 SelectCharacterScene::~SelectCharacterScene()
 {	
-
+	TextureData::DeleteTex();
+	soundManager->DeleteSceneSound(SceneID_Title);
 }	
 
 void SelectCharacterScene::Exec()
@@ -163,6 +173,7 @@ void SelectCharacterScene::Exec()
 
 	if (IsKeyPushed(KEY_INPUT_ESCAPE))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::ChangeScene), DX_PLAYTYPE_NORMAL, TRUE);
 		SceneManager::SetNextScene(SceneID_SelectNumberOfPeople);
 	}
 
@@ -250,6 +261,7 @@ void SelectCharacterScene::Exec()
 	//キャラクター変更用
 	if (IsKeyPushed(KEY_INPUT_RETURN))
 	{
+		PlaySoundMem(soundManager->GetSoundData(sound::Enter), DX_PLAYTYPE_NORMAL, TRUE);
 		switch (Choice)
 		{
 		case 1:
@@ -328,7 +340,11 @@ void SelectCharacterScene::Draw()
 	DrawGraph(1104, 20, TextureData::Esc, true);
 
 	DrawGraph(340, 0, TextureData::CharacterSelect, true);
-	DrawGraph(475, 160, TextureData::Icon, true);
+	//DrawGraph(475, 160, TextureData::Icon, true);
+	DrawGraph(475, 160, TextureData::Icon1, true);
+	DrawGraph(638, 160, TextureData::Icon2, true);
+	DrawGraph(475, 323, TextureData::Icon3, true);
+	DrawGraph(638, 323, TextureData::Icon4, true);
 
 	DrawGraph(20, 100, TextureData::CharacterFlame, true);
 	DrawGraph(860, 100, TextureData::CharacterFlame, true);

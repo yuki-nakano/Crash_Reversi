@@ -56,10 +56,6 @@ int TextureData::Skill_Desc4;
 int TextureData::Skill_Desc5;
 int TextureData::Skill_Desc6;
 int TextureData::Icon;
-int TextureData::Icon1;
-int TextureData::Icon2;
-int TextureData::Icon3;
-int TextureData::Icon4;
 
 int TextureData::SetCursor1;
 int TextureData::SetCursor2;
@@ -172,10 +168,6 @@ bool TextureData::DeleteTex()
 	DeleteGraph(TextureData::Skill_Desc5);
 	DeleteGraph(TextureData::Skill_Desc6);
 	DeleteGraph(TextureData::Icon);
-	DeleteGraph(TextureData::Icon1);
-	DeleteGraph(TextureData::Icon2);
-	DeleteGraph(TextureData::Icon3);
-	DeleteGraph(TextureData::Icon4);
 	DeleteGraph(TextureData::SetCursor1);
 	DeleteGraph(TextureData::SetCursor2);
 	DeleteGraph(TextureData::SetCursor3);

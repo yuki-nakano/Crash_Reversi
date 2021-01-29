@@ -22,8 +22,6 @@ enum SceneID
 {
 	//! タイトルシーン
 	SceneID_Title,
-	//! オプションシーン
-	SceneID_Option,
 	//! 説明シーン
 	SceneID_Description,
 	//! 人数選択シーン
@@ -34,8 +32,7 @@ enum SceneID
 	SceneID_SelectStage,
 	//! プレイシーン
 	SceneID_Play,
-	//! スキル確認シーン
-	SceneID_CheckSkill,
+
 	
 	SceneID_Max,
 	SceneID_Invalid,	//無効値

@@ -22,7 +22,6 @@
     <ClCompile Include="source\GameManager.cpp" />
     <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\DrawTexture.cpp" />
-    <ClCompile Include="source\fade.cpp" />
     <ClCompile Include="source\Collision.cpp" />
     <ClCompile Include="source\Piece.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -46,7 +45,6 @@
     <ClInclude Include="source\common.h" />
     <ClInclude Include="source\Input.h" />
     <ClInclude Include="source\DrawTexture.h" />
-    <ClInclude Include="source\fade.h" />
     <ClInclude Include="source\othello.h" />
     <ClInclude Include="source\SceneManager.h" />
     <ClInclude Include="source\Scene\DescriptionScene.h" />

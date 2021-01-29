@@ -9,7 +9,7 @@
 #include "Collision.h"
 #include "Definition.h"
 #include "othello.h"
-#include "fade.h"
+
 
 #include "SoundManager.h"
 #include "SceneManager.h"

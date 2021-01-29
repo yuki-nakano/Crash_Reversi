@@ -15,6 +15,8 @@ public:
 
 	virtual bool IsEnd() const; //シーンが終了したかどうかを返す
 
+	SoundManager* soundManager = nullptr;
+
 private:
 	void Skill(Piece piece[], int num);
 

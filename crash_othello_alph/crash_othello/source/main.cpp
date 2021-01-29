@@ -23,6 +23,7 @@ int WINAPI WinMain(
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	//管理クラスの作成
+	SoundManager::CreateInstance();
 	Othello::CreateInstance();
 	GameManager::CreateInstance();
 	SceneManager* pSceneMng = new SceneManager();
@@ -55,6 +56,7 @@ int WINAPI WinMain(
 		}
 	}
 
+	SoundManager::DeleteInstance();
 	Othello::DeleteInstance();
 	GameManager::DeleteInstance();
 	delete pSceneMng;

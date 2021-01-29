@@ -57,9 +57,6 @@ SceneBase* SceneManager::create_NextScene()
 	case SceneID_Title:
 		next = new TitleScene();
 		break;
-	case SceneID_Option:
-		next = new OptionScene();
-		break;
 	case SceneID_Description:
 		next = new DescriptionScene();
 		break;
