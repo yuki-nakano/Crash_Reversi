@@ -1,6 +1,9 @@
 ﻿#ifndef SOUNDMANAGER_H
 #define SOUNDMANAGER_H
 
+//#include"common.h"
+#include"Definition.h"
+
 enum sound
 {
 	//タイトルシーン
@@ -72,7 +75,6 @@ public:
 
 	int GetSoundData(int num);
 
-private:
 	int Sound[SoundMax];
 
 };

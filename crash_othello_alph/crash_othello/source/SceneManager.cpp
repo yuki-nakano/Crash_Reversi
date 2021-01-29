@@ -7,6 +7,8 @@ SceneManager::SceneManager()
 	:m_pScene(nullptr)
 {
 	soundManager = SoundManager::GetInstance();
+	soundManager->Sound[title] = LoadSoundMem("res/Sound/タイトルからキャラ選択まで.mp3");
+	soundManager->Sound[Play] = LoadSoundMem("res/Sound/メインゲーム画面.mp3");
 
 	//最初に実行するシーンを作成する
 	SetNextScene(SceneID_Title);
@@ -30,12 +32,13 @@ void SceneManager::Exec()
 	{
 	case true:
 		//ゲーム中
-		
+		StopStreamSoundMem(soundManager->GetSoundData(sound::title));
+		PlaySoundMem(soundManager->GetSoundData(sound::title), DX_PLAYTYPE_BACK, FALSE);
 		
 		break;
 	case false:
 		//ゲーム外
-
+		PlaySoundMem(soundManager->GetSoundData(sound::Play), DX_PLAYTYPE_BACK, FALSE);
 
 		break;
 	}
@@ -48,12 +51,12 @@ void SceneManager::Exec()
 		{
 		case SceneID_Title:
 			//ゲーム中のを止める
-			
+			StopSoundMem(soundManager->GetSoundData(sound::title));
 
 			break;
 		case SceneID_SelectCharacter:
 			//ゲーム外のを止める
-
+			StopSoundMem(soundManager->GetSoundData(sound::Play));
 
 			break;
 		default:
