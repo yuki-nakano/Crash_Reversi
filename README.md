@@ -1,0 +1,2 @@
+# Crash_Reversi
+クラッシュリバーシ
